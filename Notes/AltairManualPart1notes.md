@@ -12,4 +12,11 @@
 - we can create tables of this called truth tables
 
 ## B,
-- We can combine the basic logic circuits
+- We can combine the basic logic circuits to create more logic statements
+- Three or more logic circuits make a logic system
+- Exclusive-Or circuit can implement logical functions and add two input conditions
+- Exculsive-Or circuit is called a binary adder due to the connection electronic logic has with binary (as they both only have two states)
+- Two NAND circuits can be combined to create a flip flop circuit. Flip-Flop changes state only when a single arrives it can act as a short term memory.
+- Multiple flip-flops can be cascaded together to form memory registers and electronic counters.
+- Other logic circuits can be combines as well to form monostable and astable circuits.
+- Monostable circuits have two states and are only are one of them. When they recieve a signal they change to the opposite state and then return to their normal state. 
