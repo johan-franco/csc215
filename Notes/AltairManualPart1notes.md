@@ -20,3 +20,10 @@
 - Multiple flip-flops can be cascaded together to form memory registers and electronic counters.
 - Other logic circuits can be combines as well to form monostable and astable circuits.
 - Monostable circuits have two states and are only are one of them. When they recieve a signal they change to the opposite state and then return to their normal state. 
+
+## Flip Flop Circuits
+
+![flipflop](flip-flop.jpeg)
+
+This is a flip-flop circuit. It is able to maintain the signal it recieves (This signal can be seen as a bit). It is made of up two NAND circuits and because of those capabilities it can be cascaded together to form memory registers. 
+## C.
