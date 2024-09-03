@@ -26,4 +26,12 @@
 ![flipflop](flip-flop.jpeg)
 
 This is a flip-flop circuit. It is able to maintain the signal it recieves (This signal can be seen as a bit). It is made of up two NAND circuits and because of those capabilities it can be cascaded together to form memory registers. 
+
+
+
 ## C.
+- Bits are a two digit number system
+- decimal is a 10 digit number system
+- hexadecimal is a 16 digit number system (however it includes letters)
+
+## D
