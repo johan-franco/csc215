@@ -5,9 +5,9 @@ Chapter 2 introduced us to the software components of the computer system, parti
 ## Vocab
 
 | Acroynm | Definition |
-| :-------|:------------:|
+| :-------|:------------|
 | CRT    | Console Video Display Terminal: This logical name points to a device that outputs video, such as a monitor or screen.|
-| LPT    |  Line Printer: Refers to printers used to produce hard copy output from the computer. The name "LPT" is used to abstract whether the printer is a dot matrix, laser, or any other. type.       |
+| LPT    |  Line Printer: Refers to printers used to produce hard copy output from the computer.        |
 | CON    |  Console: Main input/output device.        |
 | LST    |  List Device    |
 |  RDR   |     Logical device that accesses general input devices        |
@@ -15,9 +15,9 @@ Chapter 2 introduced us to the software components of the computer system, parti
 
 
 ## Selecting Devices in CP/M & Logical Devices & Names
-- A logical device is the abstract representation of the physical hardware
 - CP/M is designed to simplify communication with different devices, no matter the specific hardware configuration of the computer. 
-- CP/M allows users to select devices based on these logical names. 
+- A logical device is the abstract representation of the physical hardware
+- CP/M allows users to select the logical devices based on these logical names. 
 - We only need the logical name assigned, we don't need to interact directly with the hardware at all.
 - For example, if you want to output data to a printer, you can refer to the "LPT" device, or if you need input from a punch card reader, you refer to the "RDR" device.
 - Logical names make it easier to write portable programs 
