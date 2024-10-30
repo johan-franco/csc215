@@ -51,12 +51,12 @@
 ### Disk Access Functions
 | Label    | Code    | Function|
 | -------- | ------- | ------- |
-| INITF | 13    |    Initialize BDOS. select drive A:      |
+| INITF | 13     |    Initialize BDOS. select drive A:      |
 | DSELF | 14     |      Log in and select drive d:  |
-| OPENF | 15   |    Open a file for read or write      |
-| CLOSEF | 16    |    Close a file     |
+| OPENF | 15     |    Open a file for read or write      |
+| CLOSEF| 16    |    Close a file     |
 | FINDF | 17     |  Find a file in the disk directory        |
-| NEXTF | 18   |     Find next occurrence of a file     |
+| NEXTF | 18     |     Find next occurrence of a file     |
 | DELEF | 19     |     Delete a file     |
 | READF | 20     |   Read one disk record into memory       |
 | WRITF | 21     |    Write one record from memory to disk     |
@@ -64,7 +64,7 @@
 | SDMAF | 26     |    Set RAM buffer address for read or write     |
 
 - To use these functions you would use MVI REGISTER CODE. 
-- All these functions are able to work as they use the "giant hook" that standardizes the places of the CBIOS.
+- All these functions are able to work as they use the "giant hook" that standardizes the places of the CBIOS. This is necessary if we want CPM programs to be portable.
 
 ### Input/Output Functions:
 
@@ -72,10 +72,13 @@
 - RBUFF (10): Reads an entire line of console input. This would be used for console programs.
 - CRDYF (11): We can use this to check for an event, specifically input. Paired with a JMP, JNC, CALL it could be used to create a conditiona loop
 - RRDRF(3): If we take input from a different device like a card reader, we can use this to read the info and then act accordingly given the information.
-- WPUNF (4): We liekly won't use this function as we don't need to write to any punch device. 
+- WPUNF (4): We likely won't use this function as we don't need to write to any punch device. 
 
 ### Disk Access Functions:
 
 - OPENF (15) and CLOSEF (16): In order to manipulate the files we need to first open them and after we are done we need to close them.
 - READF (20) and WRITF (21): Reads and writes from disk, so we could use this to take files as input and directly change a file if necessary. This could be especially useful if we we create an output file and later need to modify it in the program.
 - MAKEF (22): Creates a new file, could be used to store output data.
+- DELEF (19): Could be useful if we created a temporary file for whatever reason and then need to delete it at the end of the program.
+- FINDF (17): Useful if we need a specific file to read, use for input, or output.
+
