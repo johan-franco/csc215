@@ -68,10 +68,11 @@
 
 ### Input/Output Functions:
 
-- RCONF (1) and WCONF (2): If we want to output anything to the console or take input from console. In other words necessary for console programs.
+- RCONF (1) and WCONF (2): If we want to output anything to the console or take input from console. In other words necessary for console programs. Also can be used to troubleshoot (ex we can output a number to figure out how long a program loops in a certain area, or we can check values of important variables) 
 - RBUFF (10): Reads an entire line of console input. This would be used for console programs.
-- CRDYF (11): We can use this to check for an event, specifically input.
+- CRDYF (11): We can use this to check for an event, specifically input. Paired with a JMP, JNC, CALL it could be used to create a conditiona loop
 - RRDRF(3): If we take input from a different device like a card reader, we can use this to read the info and then act accordingly given the information.
+- WPUNF (4): We liekly won't use this function as we don't need to write to any punch device. 
 
 ### Disk Access Functions:
 
