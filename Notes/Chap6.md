@@ -1,4 +1,8 @@
-# Giant Hook
+
+
+[Adonis Presentation](https://github.com/Donworks/csc215/blob/main/Chapter_6.md)
+
+# Giant Hook (Table 5.1)
 
 ### System Initialization
 
@@ -28,11 +32,10 @@
 | `3E21H + b` | SETSEC | Seek current drive to sector specified.                                                                             |
 | `3E24H + b` | SETDMA | Set RAM buffer start address for next disk read or write.                                                           |
 | `3E27H + b` | READ   | Read selected disk, track, sector into RAM buffer.                                                                  |
-| `3E2AH + b` | WRITE  | Write contents of RAM buffer into selected disk, track, sector.                                                     |
+| `3E2AH + b` | WRITE  | Write contents of RAM buffer into selected disk, track, sector.                |
 
-Functions use the standardized access points/vectors provided by the giant hook to work their magic.
 
-Input/Output Functions
+### Input/Output Functions
 | Label    | Code    | Function|
 | -------- | ------- | ------- |
 | RCONF  | 1    |   Read character from console device |
@@ -45,7 +48,7 @@ Input/Output Functions
 | RBUFF | 10     |   Read console edited line input       |
 | CRDYF | 11     |   Check console for character ready      |
 
-Disk Access Functions
+### Disk Access Functions
 | Label    | Code    | Function|
 | -------- | ------- | ------- |
 | INITF | 13    |    Initialize BDOS. select drive A:      |
@@ -60,14 +63,15 @@ Disk Access Functions
 | MAKEF | 22     |       Create a disk directory entry  |
 | SDMAF | 26     |    Set RAM buffer address for read or write     |
 
-To use these functions you would use MVI REGISTER CODE
+- To use these functions you would use MVI REGISTER CODE. 
+- All these functions are able to work as they use the "giant hook" that standardizes the places of the CBIOS.
 
-Input/Output Functions:
+### Input/Output Functions:
 
 - RCONF (1) and WCONF (2): If we want to output anything to the console or take input from console. In other words necessary for console programs.
 - RBUFF (10): Reading an entire line of console input is a typical requirement in user-interactive programs.
 
-Disk Access Functions:
+### Disk Access Functions:
 
 - OPENF (15) and CLOSEF (16): In order to manipulate the files we need to first open them and after we are done we need to close them.
 - READF (20) and WRITF (21): Reads and writes from disk, so we could use this to take files as input and directly change a file if necessary
