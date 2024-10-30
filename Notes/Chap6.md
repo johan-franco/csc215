@@ -69,10 +69,12 @@
 ### Input/Output Functions:
 
 - RCONF (1) and WCONF (2): If we want to output anything to the console or take input from console. In other words necessary for console programs.
-- RBUFF (10): Reading an entire line of console input is a typical requirement in user-interactive programs.
+- RBUFF (10): Reads an entire line of console input. This would be used for console programs.
+- CRDYF (11): We can use this to check for an event, specifically input.
+- RRDRF(3): If we take input from a different device like a card reader, we can use this to read the info and then act accordingly given the information.
 
 ### Disk Access Functions:
 
 - OPENF (15) and CLOSEF (16): In order to manipulate the files we need to first open them and after we are done we need to close them.
-- READF (20) and WRITF (21): Reads and writes from disk, so we could use this to take files as input and directly change a file if necessary
+- READF (20) and WRITF (21): Reads and writes from disk, so we could use this to take files as input and directly change a file if necessary. This could be especially useful if we we create an output file and later need to modify it in the program.
 - MAKEF (22): Creates a new file, could be used to store output data.
