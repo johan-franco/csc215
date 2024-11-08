@@ -1,0 +1,24 @@
+# CHAP 11 NOTES
+
+- ASL Programs should only be written in capital letters
+- ED FILE.TXT (creates a file and opens ED)
+  - We can then use -V to turn off the automatic numbering
+  - enter  'i' to enter input mode, which allows us to copy and paste
+- CTRL I is tab
+- The DEL, RUB, or RUBOUT key can be used to erase the last character entered.
+- 3LT means you want ED to go down 3 Lines and Type one line
+ - Substitute command can then be used to replace that line
+  - Use S followed by the part that is incorrect. Then use CTRL Z and write the exact part you want it to be replaced by. 
+- B0P causes pointer to go to the begining of the program and lists out everything
+- 0P lists out the page (?) and what it outputs will change depening on the pointer
+-  When using the ASM command on a file it is doing the following:
+    - Creating a symbol table
+        - table has associated byte or address values
+    - Assigned values are fetched out of the symbol table and placed in object code buffer
+        - object code buffer is for its own internal use (we never see it)
+- To actually create symbol table and to know what values to assign ASM goes through the program various times. 
+- The option .AZZ is useful for troubleshooting as error messages are received earlier because the option says to disregard output
+- ASM produces a .PRN file and a .HEX file
+- .HEX is ideal for data transmission
+- For the actual program to be executed the .HEX file has to be converted into the binary image of the program.  
+- This is down using LOAD
