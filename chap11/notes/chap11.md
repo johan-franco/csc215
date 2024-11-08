@@ -21,4 +21,4 @@
 - ASM produces a .PRN file and a .HEX file
 - .HEX is ideal for data transmission
 - For the actual program to be executed the .HEX file has to be converted into the binary image of the program.  
-- This is down using LOAD
+- This is done using LOAD, after we do so we can simply call the file and it will run and show its output.
