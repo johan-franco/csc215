@@ -2,7 +2,7 @@
 
 ;Currently the output does not print
 ; Specifically RESULT_MSG (in db)& the calls of the actual result aren't printing
-; Caleb believes it to be something wrong with its parsing
+; Caleb believes it to be something wrong with its parsing/logic (after all program runs fine)
 ; ASCII CHARACTERS
 CR	EQU	0DH
 LF	EQU	0AH
