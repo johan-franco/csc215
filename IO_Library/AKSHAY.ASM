@@ -98,9 +98,9 @@ CIMSG:  PUSH    B       ; START BY SAVING REGISTERS.
 
 ; CONVERT CHARACTER IN A USING ROT13
 R13CHR: PUSH    B       ; SAVE REGISTERS
-        PUSH    D
+        PUSH    D       ; Pushes value out of register and adds it to stack
         PUSH    H
-        CPI     41H     ; CHAR IS CAPS LETTER?
+        CPI     41H     ; CHAR IS CAPS LETTER? (checks minimum)
         JC      SKIP1   ; IF NOT, JMP
         CPI     5BH     ; CHECKING AGAIN
         JNC     SKIP1   ; IF NOT CAPS, JMP
