@@ -3,6 +3,7 @@
 ; Currently the output does not print
 ; Specifically RESULT_MSG (in db)& the calls of the actual result aren't printing
 ; Caleb believes it to be something wrong with its parsing/logic (after all program runs fine)
+;
 ; ASCII CHARACTERS
 CR	EQU	0DH
 LF	EQU	0AH
@@ -21,7 +22,7 @@ TPA	EQU	100H
 
 START:	LXI	SP,STAK		; INTIALIZE STACK POINTER
 	CALL	CCRLF		; NEWLINE
-	LXI	H,RESULT_MSG		; DISPLAY GREETING
+	LXI	H,PROMPT		; DISPLAY GREETING
 	CALL	COMSG
 	CALL	CCRLF
 
