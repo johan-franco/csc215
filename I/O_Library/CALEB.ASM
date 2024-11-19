@@ -174,9 +174,9 @@ CIMSG:  PUSH    B               ; SAVE REGISTERS
         POP     B
         RET
 
+RESULT_MSG: DB  'EQUIVALENT IN INCHES: ',CR,LF,0
 SINON:  DB      'FEET TO INCHES CONVERTER',CR,LF,0
 PROMPT: DB      'ENTER FEET: ',0
-RESULT_MSG: DB  'EQUIVALENT IN INCHES: ',CR,LF,0
 
 INBUF:  DS      83              ; Input buffer
 STAK:   DS      64              ; Stack
