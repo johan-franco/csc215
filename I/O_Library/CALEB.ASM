@@ -1,6 +1,6 @@
 ; FEET TO INCHES CONVERTER	16 NOV 24
 
-;Currently the output does not print
+; Currently the output does not print
 ; Specifically RESULT_MSG (in db)& the calls of the actual result aren't printing
 ; Caleb believes it to be something wrong with its parsing/logic (after all program runs fine)
 ; ASCII CHARACTERS
@@ -21,7 +21,7 @@ TPA	EQU	100H
 
 START:	LXI	SP,STAK		; INTIALIZE STACK POINTER
 	CALL	CCRLF		; NEWLINE
-	LXI H, RESULT_MSG
+	LXI	H,RESULT_MSG		; DISPLAY GREETING
 	CALL	COMSG
 	CALL	CCRLF
 
@@ -176,7 +176,7 @@ CIMSG:  PUSH    B               ; SAVE REGISTERS
 
 SINON:  DB      'FEET TO INCHES CONVERTER',CR,LF,0
 PROMPT: DB      'ENTER FEET: ',0
-RESULT_MSG: DB  'EQUIVALENT IN INCHES: ',0
+RESULT_MSG: DB  'EQUIVALENT IN INCHES: ',CR,LF,0
 
 INBUF:  DS      83              ; Input buffer
 STAK:   DS      64              ; Stack
