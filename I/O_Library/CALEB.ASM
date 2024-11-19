@@ -4,6 +4,7 @@
 ; Specifically RESULT_MSG (in db)& the calls of the actual result aren't printing
 ; Caleb believes it to be something wrong with its parsing/logic (after all program runs fine)
 ; Replacing the x values in LXIH, XXX should make it print something else, and it does 
+; After all the testing we have concluded that at the very least that _ affects whether something is printed properly 
 
 ; ASCII CHARACTERS
 CR	EQU	0DH
@@ -23,8 +24,7 @@ TPA	EQU	100H
 
 START:	LXI	SP,STAK		; INTIALIZE STACK POINTER
 	CALL	CCRLF		; NEWLINE
-	LXI	H,SINON		; DISPLAY GREETING
-	LXI	H,RE_LT		; DISPLAY GREETING
+	LXI	H,RESULT		; DISPLAY GREETING
 	CALL	COMSG
 	CALL	CCRLF
 
