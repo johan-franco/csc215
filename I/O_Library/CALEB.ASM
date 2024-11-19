@@ -1,6 +1,8 @@
 ; FEET TO INCHES CONVERTER	16 NOV 24
 
 ;Currently the output does not print
+; Specifically RESULT_MSG (in db)& the calls of the actual result aren't printing
+; Caleb believes it to be something wrong with its parsing
 ; ASCII CHARACTERS
 CR	EQU	0DH
 LF	EQU	0AH
@@ -35,7 +37,6 @@ MAIN:	LXI	H,PROMPT	; PROMPT USER INPUT
 	CALL	MULT		; RESULT IS IN DE
 
 	LXI	H,RESULT_MSG	; OUTPUT RESULT MESSAGE
-	MOV H,MULT
 	CALL	COMSG
 	CALL	CCRLF
 
