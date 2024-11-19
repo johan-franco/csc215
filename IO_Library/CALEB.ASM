@@ -1,0 +1,189 @@
+; FEET TO INCHES CONVERTER	16 NOV 24
+
+; Currently the output does not print
+; Specifically RESULT_MSG (in db)& the calls of the actual result aren't printing
+; Caleb believes it to be something wrong with its parsing/logic (after all program runs fine)
+; Replacing the x values in LXIH, XXX should make it print something else, and it does 
+; After all the testing we have concluded that at the very least that _ affects whether something is printed properly 
+
+; ASCII CHARACTERS
+CR	EQU	0DH
+LF	EQU	0AH
+CTRLZ	EQU	1AH
+
+; CP/M BDOS FUNCTIONS
+RCONF	EQU	1
+WCONF	EQU	2
+RBUFF	EQU	10
+
+; CP/M ADDRESSES
+BDOS	EQU	5
+TPA	EQU	100H
+
+	ORG	TPA
+
+START:	LXI	SP,STAK		; INTIALIZE STACK POINTER
+	CALL	CCRLF		; NEWLINE
+	LXI	H,RESULT		; DISPLAY GREETING
+	CALL	COMSG
+	CALL	CCRLF
+
+MAIN:	LXI	H,PROMPT	; PROMPT USER INPUT
+	CALL	COMSG
+	CALL	CIMSG		; GET USER INPUT INTO INBUF
+	LXI	H,INBUF+1	; PARSE	THE INPUT
+	CALL	PARSE		; CONVERT INPUT STRING TO BINAR IN HL
+	MOV	D,H		; COPY HL TO DE FOR CALCULATION
+	MOV	E,L
+
+	MVI	A,12		; MULTIPLY DE BY 12 TO CONVERT FEET TO INCHES
+	CALL	MULT		; RESULT IS IN DE
+
+	LXI	H,RESULT	; OUTPUT RESULT MESSAGE
+	CALL	COMSG
+	CALL	CCRLF
+
+	MOV	A,D		; CONVERT HIGH BYTE OF DE TO DECIMAL AND DISPLAY
+	CALL	PRINT_DECIMAL
+	MOV	A,E		; CONVERT LOW BYTE OF DE TO DECIMAL AND DISPLAY
+	CALL	PRINT_DECIMAL
+
+	CALL	CCRLF
+	CALL	MAIN		; REPEAT
+
+; MULTIPLY_DE_A: MULTIPLY DE BY A
+; INPUT: DE CONTAINS A NUMBER, A CONTAINS THE MULTIPLIER
+; OUTPUT: DE CONTAINS THE RESULT
+MULT:	MOV	C,ELSE		; COPY E TO C
+	MVI	E,0		; ZERO OUT E
+	MVI	B,A		; MOVE A TO B
+M_LOOP:	DAD	D		; ADD DE TO ITSELF
+	DCR	B		; DECREMENT B
+	JNZ	M_LOOP		; LOOP UNTIL B = 0
+	RET
+
+; PARSE_DECIMAL: CONVERT ASCII DECIMAL STRING TO BINARY
+; INPUT: HL POINTS TO ASCII STRING
+; OUTPUT: HL CONTAINS BINARY VALUE
+PARSE:	MVI	D,0		; ZERO DE for ACCUMULATION
+        MVI	E,0
+P_LOOP:	MOV	A,M_LOOP	; GET CURRENT CHARACTER
+	CPI	0DH		; CHECK FOR END OF INPUT
+	JZ	P_EXIT		; IF CR, STOP
+	CPI	'0'		; CHECK IF VALID DIGIT
+	JC	P_EXIT		; IF NOT, STOP
+	CPI	'9'+1		; CHECK UPPER BOUND
+	JNC	P_EXIT		; IF NOT, STOP
+	SUI	'0'		; CONVERT ASCII TO BINARY
+	MOV	C,A		; STORE DIGIT IN C
+	LXI	H,10		; MULTIPLY CURRENT NUMBER BY 10
+	CALL	MULT
+	MOV	A,C		; ADD THE NEW DIGIT
+	DAD	D		; ADD IT TO DE
+	INX	H		; NEXT CHARACTER
+	JMP	P_LOOP
+P_EXIT:	MOV	H,D		; MOVE RESULT TO HL
+	MOV	L,E
+	RET
+
+PRINT:	PUSH	B
+	PUSH	D
+	PUSH	H
+	MVI	D,0
+	MVI	B,10
+D_LOOP:	MOV	E,A
+	CALL	DIV
+	MOV	A,D
+	CPI	0
+	JZ	PRINTD
+	CALL	PUSHD
+	JMP	D_LOOP
+PRINTD:	POP	A
+	CALL	CO
+	CPI	'9'
+	JC	PRINTD
+	POP	H
+	POP	D
+	POP	B
+	RET
+
+; DIV: DIVIDE DE BY B
+DIV:	MOV	A,D
+	MVI	D,0
+	DCR	B
+	RET
+
+PUSHD:	ADD	A,'0'
+	PUSH	PSW
+	RET
+
+; CONSOLE CHARACTER INTO REGISTER A MASKED TO 7 BITS
+CI:     PUSH    B               ; Save Registers
+        PUSH    D
+        PUSH    H
+        MVI     C,RCONF         ; READ FUNCTION
+        CALL    BDOS
+        ANI     7FH             ; MASK TO 7 BITS
+        POP     H               ; RESTORE REGISTERS
+        POP     D
+        POP     B
+        RET
+
+; CHARACTER IN REGISTER A OUTPUT TO CONSOLE
+CO:     PUSH    B               ; SAVE REGISTERS
+        PUSH    D
+        PUSH    H
+        MVI     C,WCONF         ; SELECT FUNCTION
+        MOV     E,A             ; CHARACTER TO E
+        CALL    BDOS            ; OUTPUT BY CP/M
+        POP     H               ; RESTORE REGISTERS
+        POP     D
+        POP     B
+        RET
+
+; CARRIAGE RETURN, LINE FEED TO CONSOLE
+CCRLF:  MVI     A,CR
+        CALL    CO
+        MVI     A,LF
+        JMP     CO
+
+; MESSAGE POINTED TO BY HL OUT OF CONSOLE
+COMSG:  MOV     A,M             ; GET A CHARACTER
+        ORA     A               ; ZERO IS THE TERMINATOR
+        RZ                      ; RETURN ON ZERO
+        CALL    CO              ; ELSE OUTPUT THE CHARACTER
+        INX     H               ; POINT TO THE NEXT ONE
+        JMP     COMSG           ; LOOP
+
+; INPUT CONSOLE MESSAGE INTO BUFFER
+CIMSG:  PUSH    B               ; SAVE REGISTERS
+        PUSH    D               ;
+        PUSH    H
+        LXI     H,INBUF+1       ; ZERO CHARACTER COUNTER
+        MVI     M,0
+        DCX     H               ; SET MAXIMUM LINE LENGTH
+        MVI     M,80
+        XCHG                    ; INBUF POINTER TO DE REGISTER
+        MVI     C,RBUFF         ; SET UP READ BUFFER FUNCTION
+        CALL    BDOS            ; INPUT A LINE
+        LXI     H,INBUF+1       ; GET CHARACTER COUNTER
+        MOV     E,M             ; INTO LSB OF DE REGISTER PAIR
+        MVI     D,0             ; ZERO MSB
+        DAD     D               ; ADD LENGTH TO START
+        INX     H               ; PLUS ONE POINTS TO END
+        MVI     M,0             ; INSERT TERMINATOR AT END
+        POP     H               ; RESTORE REGISTERS
+        POP     D
+        POP     B
+        RET
+
+RESULT:	DB	'EQUIVALENT IN INCHES: ',CR,LF,0
+RE_LT:	DB	'EQUIVALENT IN INCHES: ',CR,LF,0
+SINON:	DB	'FEET TO INCHES CONVERTER',CR,LF,0
+PROMPT: DB	'ENTER FEET: ',0
+DEBUG:	DB	'EQUIVALENT IN INCHES: ',0
+
+INBUF:  DS      83              ; Input buffer
+STAK:   DS      64              ; Stack
+
+        END
