@@ -3,7 +3,8 @@
 ; Currently the output does not print
 ; Specifically RESULT_MSG (in db)& the calls of the actual result aren't printing
 ; Caleb believes it to be something wrong with its parsing/logic (after all program runs fine)
-;
+; Replacing the x values in LXIH, XXX should make it print something else, and it does 
+
 ; ASCII CHARACTERS
 CR	EQU	0DH
 LF	EQU	0AH
@@ -22,11 +23,11 @@ TPA	EQU	100H
 
 START:	LXI	SP,STAK		; INTIALIZE STACK POINTER
 	CALL	CCRLF		; NEWLINE
-	LXI	H,PROMPT		; DISPLAY GREETING
+	LXI	H,RESULT		; DISPLAY GREETING
 	CALL	COMSG
 	CALL	CCRLF
 
-MAIN:	LXI	H,PROMPT	; PROMPT USER INPUT
+MAIN:	LXI	H,DEBUG	; PROMPT USER INPUT
 	CALL	COMSG
 	CALL	CIMSG		; GET USER INPUT INTO INBUF
 	LXI	H,INBUF+1	; PARSE	THE INPUT
@@ -175,9 +176,10 @@ CIMSG:  PUSH    B               ; SAVE REGISTERS
         POP     B
         RET
 
-RESULT_MSG: DB  'EQUIVALENT IN INCHES: ',CR,LF,0
-SINON:  DB      'FEET TO INCHES CONVERTER',CR,LF,0
-PROMPT: DB      'ENTER FEET: ',0
+RESULT:	DB	'EQUIVALENT IN INCHES: ',CR,LF,0
+SINON:	DB	'FEET TO INCHES CONVERTER',CR,LF,0
+PROMPT: DB	'ENTER FEET: ',0
+DEBUG:	DB	'EQUIVALENT IN INCHES: ',0
 
 INBUF:  DS      83              ; Input buffer
 STAK:   DS      64              ; Stack
