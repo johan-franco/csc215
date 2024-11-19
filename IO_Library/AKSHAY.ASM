@@ -3,7 +3,7 @@
 ; ONLY WORKS WITH CAPITAL LETTERS!
 ; CREATOR: AKSHAY KUCHIBHATLA
 ; I realized that Z is not done properly. It should be M but it outputs Z.
-
+; In his converting code he had to increase the value of the maximum so that Z would be accounted for
 ;ASCII CHARACTERS' SETUP
 ; TOGETHER CR LF MAKE A NEW LINE /n
 CR      EQU     0DH     ; CARRIAGE RETURN
