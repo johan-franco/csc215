@@ -14,20 +14,74 @@ BDOS    EQU     5       ; THE SYSTEM CALL ENTRY
 TPA     EQU     100H    ; TRANSIENT PROGRAM AREA
         ORG     TPA     ;ASSEMBLY PROGRAM FOR TPA
 
+START:  LXI	SP,STAK		; INTIALIZE STACK POINTER
+    CALL	CCRLF		; NEWLINE
+	LXI	H,WORD		; DISPLAY WORD TO GUESS
+	CALL	COMSG
+	CALL	CCRLF
+
+MAIN:   LXI H,PROMPT	; PROMPT USER INPUT
+	CALL	COMSG
+	CALL	CIMSG
+
 ; FIRST, WE INITIALIZE THE CARRIAGE RETURN AND LINEFEED TO THE CONSOLE.
 CCRLF:  MVI     A,CR
         CALL    CO
         MVI     A,LF
         JMP     CO
 
+; PRINT MESSAGE TO THE CONSOLE IN ROT13
+COMSG:  MOV     A,M     ; RETRIEVE ONE CHARACTER
+        ORA     A       ; ZERO IS THE TERMINATOR CHARACTER
+        RZ              ; RETURN OUT OF THE FUNCTION ON ZERO
+        CALL    COMPARE  ; OTHERWISE, BEGIN COMPARE
+        CALL    CO      ; OTHERWISE, OUTPUT THE CHARACTER.
+        INX     H       ; INCREMENT INDEX REGISTER
+        JMP     COMSG   ; KEEP GOING
+
+; INPUT CONSOLE MESSAGE INTO THE BBUFFER USING THIS FUCNTION
+CIMSG:  PUSH    B       ; START BY SAVING REGISTERS.
+        PUSH    D
+        PUSH    H
+        LXI     H,INBUF+1       ; ZERO CHARACTER COUNTER
+        MVI     M,0
+        DCX     H       ; DECREMENTS THE INDEX REGISTER PAIR.
+        MVI     M,80
+        XCHG            ; SEND INBUFF POINTER TO DE REGISTERS
+        MVI     C,RBUFF ; SET UP READ BUFFER FUNCTION
+        CALL    BDOS    ; INPUT A LINE
+        LXI     H,INBUF+1 ; GET THE CHARACTER COUNTER
+        MOV     E,M
+        MVI     D,0
+        DAD     D
+        INX     H
+        MVI     M,0
+        POP     H
+        POP     D
+        POP     B
+        RET
+
+
 WORD:   DB  'GUESS',CR,LF,0
 WARN:   DB  'ONLY CAPITAL LETTERS',CR,LF,0
+PROMT:  DB  'GUESS THE WORD (MAKE SURE TO USE ONLY CAPITALS)'
 
-
-COMPARE:    CPI     41H     ; CHAR IS CAPS LETTER? (checks minimum)
+COMPARE:    
+            CPI     41H     ; CHAR IS CAPS LETTER? (checks minimum)
             JC      SKIP1   ; IF NOT, JMP
             CPI     5BH     ; CHECKING AGAIN
             JNC     SKIP1   ; IF NOT CAPS, JMP
-            END
+            RET
 SKIP1:      LXI H,WARN
             RET
+; CHARACTER IN REGISTER A OUTPUT TO CONSOLE 
+CO:     PUSH    B       ;SAVE REGISTERS
+        PUSH    D
+        PUSH    H
+        MVI     C,WCONF ; SELECT FUNCTION AND MOVE INT (C)
+        MOV     E,A     ;CHARACTER MOVED FROM (A) TO (E)
+        CALL    BDOS    ; OUTPUT BY CP/M
+        POP     H       
+        POP     D
+        POP     B
+        RET
