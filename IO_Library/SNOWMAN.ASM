@@ -21,6 +21,12 @@ CCRLF:  MVI     A,CR
         JMP     CO
 
 
+; CONSOLE CHARACTER INTO REGISTER A MASKED TO 7 BITS
+CI:     MVI     C,RCONF ;READ FUNCTION IN (C)
+        CALL    BDOS
+        ANI     7FH     ;MASK TO 7 BITS
+        RET
+
 COMPARE:    
 
 

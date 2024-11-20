@@ -35,6 +35,9 @@ START2: CALL    CIMSG   ; GET A LINE OF INPUT FROM THE USER
 
 SINON:  DB      'EBG13: GUR PRNFRE PLCURE',CR,LF,0
 
+; I believe this is what is converting to ASCII
+; I'm a bit confused because it is a subroutine but seemingly never called
+; So im testing if it run regardless
 ; CONSOLE CHARACTER INTO REGISTER A MASKED TO 7 BITS
 CI:     PUSH    B       ;SAVE REGISTERS
         PUSH    D
