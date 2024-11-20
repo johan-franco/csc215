@@ -35,9 +35,7 @@ START2: CALL    CIMSG   ; GET A LINE OF INPUT FROM THE USER
 
 SINON:  DB      'EBG13: GUR PRNFRE PLCURE',CR,LF,0
 
-; I couldn't figure out if it was running or not but the program worked without it
-; This makes me think that I misinterpeted and that it never had to 'transformed' and that it was already in ASCII when we CALL it into the program
-; That conclusion makes most sense to me as cpm is lower level. I let my other experiences assume and caused a misconception. 
+; I forgot that ASCII was hex
 ; CONSOLE CHARACTER INTO REGISTER A MASKED TO 7 BITS
 CI:     PUSH    B       ;SAVE REGISTERS
         PUSH    D
