@@ -66,13 +66,12 @@ CCRLF:  MVI     A,CR
         JMP     CO
 
 ; PRINT MESSAGE TO THE CONSOLE IN ROT13
-COMSG:  MOV     A,M     ; RETRIEVE ONE CHARACTER
-        ORA     A       ; ZERO IS THE TERMINATOR CHARACTER
-        RZ              ; RETURN OUT OF THE FUNCTION ON ZERO
-        CALL    R13CHR  ; OTHERWISE, CONVERT TO R13
-        CALL    CO      ; OTHERWISE, OUTPUT THE CHARACTER.
-        INX     H       ; INCREMENT INDEX REGISTER
-        JMP     COMSG   ; KEEP GOING
+COMSG:  MOV     A,M             ; GET A CHARACTER
+        ORA     A               ; ZERO IS THE TERMINATOR
+        RZ                      ; RETURN ON ZERO
+        CALL    CO              ; ELSE OUTPUT THE CHARACTER
+        INX     H               ; POINT TO THE NEXT ONE
+        JMP     COMSG           ; LOOP
 
 ; INPUT CONSOLE MESSAGE INTO THE BBUFFER USING THIS FUCNTION
 CIMSG:  PUSH    B       ; START BY SAVING REGISTERS.
