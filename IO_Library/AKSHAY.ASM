@@ -39,16 +39,20 @@ SINON:  DB      'EBG13: GUR PRNFRE PLCURE',CR,LF,0
 ; I'm a bit confused because it is a subroutine but seemingly never called
 ; So im testing if it run regardless
 ; CONSOLE CHARACTER INTO REGISTER A MASKED TO 7 BITS
-CI:     PUSH    B       ;SAVE REGISTERS
+CI:     PUSH    B               ;SAVE REGISTERS
         PUSH    D
         PUSH    H
-        MVI     C,RCONF ;READ FUNCTION IN (C)
+        ; Test code
+        MVI     A,'.'           
+        CALL    CO              ; Output '.' to the console
+        MVI     C,RCONF         ;READ FUNCTION IN (C)
         CALL    BDOS
-        ANI     7FH     ;MASK TO 7 BITS
-        POP     H       ;RESTORE REGISTERS
+        ANI     7FH             ;MASK TO 7 BITS
+        POP     H               ;RESTORE REGISTERS
         POP     D       
         POP     B
         RET
+
 
 ; CHARACTER IN REGISTER A OUTPUT TO CONSOLE 
 CO:     PUSH    B       ;SAVE REGISTERS
