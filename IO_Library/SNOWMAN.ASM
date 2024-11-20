@@ -20,13 +20,56 @@ CCRLF:  MVI     A,CR
         MVI     A,LF
         JMP     CO
 
+WORD:   DB  'GUESS',CR,LF,0
+WARN:   DB  'ONLY CAPITAL LETTERS',CR,LF,0
 
-; CONSOLE CHARACTER INTO REGISTER A MASKED TO 7 BITS
-CI:     MVI     C,RCONF ;READ FUNCTION IN (C)
-        CALL    BDOS
-        ANI     7FH     ;MASK TO 7 BITS
+
+COMPARE:    CPI     41H     ; CHAR IS CAPS LETTER? (checks minimum)
+            JC      SKIP1   ; IF NOT, JMP
+            CPI     5BH     ; CHECKING AGAIN
+            JNC     SKIP1   ; IF NOT CAPS, JMP
+            END
+SKIP1:      LXI H,WARN
+            RET
+
+
+; INPUT CONSOLE MESSAGE INTO THE BBUFFER USING THIS FUCNTION
+CIMSG:  PUSH    B       ; START BY SAVING REGISTERS.
+        PUSH    D
+        PUSH    H
+        LXI     H,INBUF+1       ; ZERO CHARACTER COUNTER
+        MVI     M,0
+        DCX     H       ; DECREMENTS THE INDEX REGISTER PAIR.
+        MVI     M,80
+        XCHG            ; SEND INBUFF POINTER TO DE REGISTERS
+        MVI     C,RBUFF ; SET UP READ BUFFER FUNCTION
+        CALL    BDOS    ; INPUT A LINE
+        LXI     H,INBUF+1 ; GET THE CHARACTER COUNTER
+        MOV     E,M
+        MVI     D,0
+        DAD     D
+        INX     H
+        MVI     M,0
+        POP     H
+        POP     D
+        POP     B
         RET
 
-COMPARE:    
-
-
+; CONVERT CHARACTER IN A USING ROT13
+R13CHR: PUSH    B       ; SAVE REGISTERS
+        PUSH    D       ; Pushes value out of register and adds it to stack
+        PUSH    H
+        CPI     41H     ; CHAR IS CAPS LETTER? (checks minimum)
+        JC      SKIP1   ; IF NOT, JMP
+        CPI     5BH     ; CHECKING AGAIN
+        JNC     SKIP1   ; IF NOT CAPS, JMP
+        CPI     4DH     ; OVER 77? (PAST M?)
+        JC      SKIP    ; IF NO, THEN ADD 13
+        JZ      SKIP    ; IF EQUAL, ADD 13.
+        SBI     0DH     ; IF LESS, THEN SUB 13
+        JMP     SKIP1   ; NO ADDING
+SKIP:   ADI     0DH     ; ADDING 13
+SKIP1:  POP     H       ; RESTORE REGISTERS
+        POP     D
+        POP     B
+        RET
