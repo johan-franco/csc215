@@ -35,24 +35,20 @@ START2: CALL    CIMSG   ; GET A LINE OF INPUT FROM THE USER
 
 SINON:  DB      'EBG13: GUR PRNFRE PLCURE',CR,LF,0
 
-; I believe this is what is converting to ASCII
-; I'm a bit confused because it is a subroutine but seemingly never called
-; So im testing if it run regardless
+; I couldn't figure out if it was running or not but the program worked without it
+; This makes me think that I misinterpeted and that it never had to 'transformed' and that it was already in ASCII when we CALL it into the program
+; That conclusion makes most sense to me as cpm is lower level. I let my other experiences assume and caused a misconception. 
 ; CONSOLE CHARACTER INTO REGISTER A MASKED TO 7 BITS
-CI:     PUSH    B               ;SAVE REGISTERS
+CI:     PUSH    B       ;SAVE REGISTERS
         PUSH    D
         PUSH    H
-        ; Test code
-        MVI     A,'.'           
-        CALL    CO              ; Output '.' to the console
-        MVI     C,RCONF         ;READ FUNCTION IN (C)
+        MVI     C,RCONF ;READ FUNCTION IN (C)
         CALL    BDOS
-        ANI     7FH             ;MASK TO 7 BITS
-        POP     H               ;RESTORE REGISTERS
+        ANI     7FH     ;MASK TO 7 BITS
+        POP     H       ;RESTORE REGISTERS
         POP     D       
         POP     B
         RET
-
 
 ; CHARACTER IN REGISTER A OUTPUT TO CONSOLE 
 CO:     PUSH    B       ;SAVE REGISTERS
