@@ -18,15 +18,9 @@ START1: CALL    CCRLF   ; START A NEW LINE
         LXI     H,SINON ; WITH SIGN-ON MESSAGE
         CALL    COMSG
 START2: CALL    CI   ; GET ONE CHAR
+        CALL    COMPARE
         LXI     H,INBUF+2  
-        CPI     41H     ; CHAR IS CAPS LETTER? (checks minimum)
-        JC      SKIP1   ; IF NOT, JMP
-        CPI     5BH     ; CHECKING AGAIN
-        JNC     SKIP1   ; IF NOT CAPS, JMP
-        JMP     SKIP   ; NO WARNING
-SKIP1:  LXI H,WORD
-        CALL COMSG
-SKIP:   CALL    CCRLF
+        CALL    CCRLF
         JMP     START2  ; KEEP GOING!
 
 SINON:  DB      'WELCOME TO SNOWMAN GAME',CR,LF,0
@@ -63,13 +57,25 @@ CCRLF:  MVI     A,CR
         MVI     A,LF
         JMP     CO
 
-; PRINT MESSAGE TO THE CONSOLE IN ROT13
+; PRINT MESSAGE TO THE CONSOLE 
 COMSG:  MOV     A,M     ; RETRIEVE ONE CHARACTER
         ORA     A       ; ZERO IS THE TERMINATOR CHARACTER
         RZ              ; RETURN OUT OF THE FUNCTION ON ZERO
         CALL    CO      ; OTHERWISE, OUTPUT THE CHARACTER.
         INX     H       ; INCREMENT INDEX REGISTER
         JMP     COMSG   ; KEEP GOING
+
+CHECK:  MOV     A,M     ; RETRIEVE ONE CHARACTER
+        ORA     A       ; ZERO IS THE TERMINATOR CHARACTER
+        RZ              ; RETURN OUT OF THE FUNCTION ON ZERO
+        CALL    MOD      ; COMPARE WITH INPUTTED CONSOLE AT D
+        CZ      
+        INX     H       ; INCREMENT INDEX REGISTER
+        JMP     COMSG   ; KEEP GOING
+
+MOD:    CMP     D
+        RET
+
 
 ; INPUT CONSOLE MESSAGE INTO THE BBUFFER USING THIS FUCNTION
 CIMSG:  PUSH    B       ; START BY SAVING REGISTERS.
@@ -93,28 +99,27 @@ CIMSG:  PUSH    B       ; START BY SAVING REGISTERS.
         POP     B
         RET
 
-COMPARE:PUSH    B       ; SAVE REGISTERS
-        PUSH    D       ; Pushes value out of register and adds it to stack
-        PUSH    H    
-        CPI     41H     ; CHAR IS CAPS LETTER? (checks minimum)
-        JC      SKIP1   ; IF NOT, JMP
-        CPI     5BH     ; CHECKING AGAIN
-        JNC     SKIP1   ; IF NOT CAPS, JMP
-        JMP     SKIP   ; NO WARNING
-SKIP1:  LXI H,WORD
-        CALL COMSG
-        RET
-SKIP:   
+COMPARE:
+        MOV     D,A     ;CHARACTER MOVED FROM (A) TO (D)
+        LXI     H,WORD
+        CALL    CO   
+        LXI     H,WORD
+        CALL    CHECK
+
         POP     H       ; RESTORE REGISTERS
         POP     D
         POP     B
         RET
+        
 
-SKIP:   ADI     0DH     ; ADDING 13
-SKIP1:  POP     H       ; RESTORE REGISTERS
+
+
+COR:    LXI     H,SINON
+        CALL    COMSG
+        POP     H       ; RESTORE REGISTERS
         POP     D
         POP     B
-        RET
+        END
 
 INBUF:  DS      83      ;LINE INPUT BUFFER
         CALL    CCRLF   ; ADD CR, LF
