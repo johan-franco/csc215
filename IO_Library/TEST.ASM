@@ -18,8 +18,7 @@ START1: CALL    CCRLF   ; START A NEW LINE
         LXI     H,SINON ; WITH SIGN-ON MESSAGE
         CALL    COMSG
 START2: CALL    CI   ; GET ONE CHAR
-        CALL    COMPARE
-        LXI     H,INBUF+2  
+        ; CALL    COMPARE 
         CALL    CCRLF
         JMP     START2  ; KEEP GOING!
 
@@ -68,13 +67,11 @@ COMSG:  MOV     A,M     ; RETRIEVE ONE CHARACTER
 CHECK:  MOV     A,M     ; RETRIEVE ONE CHARACTER
         ORA     A       ; ZERO IS THE TERMINATOR CHARACTER
         RZ              ; RETURN OUT OF THE FUNCTION ON ZERO
-        CALL    MOD      ; COMPARE WITH INPUTTED CONSOLE AT D
-        CZ      
+        CMP     E
+        JZ      COR
         INX     H       ; INCREMENT INDEX REGISTER
-        JMP     COMSG   ; KEEP GOING
+        JMP     CHECK   ; KEEP GOING
 
-MOD:    CMP     D
-        RET
 
 
 ; INPUT CONSOLE MESSAGE INTO THE BBUFFER USING THIS FUCNTION
@@ -99,10 +96,10 @@ CIMSG:  PUSH    B       ; START BY SAVING REGISTERS.
         POP     B
         RET
 
-COMPARE:
-        MOV     D,A     ;CHARACTER MOVED FROM (A) TO (D)
-        LXI     H,WORD
-        CALL    CO   
+COMPARE:PUSH    B       ; START BY SAVING REGISTERS.
+        PUSH    D
+        PUSH    H
+        MOV     E,A     ;CHARACTER MOVED FROM (A) TO (E)  
         LXI     H,WORD
         CALL    CHECK
 
