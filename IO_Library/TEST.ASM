@@ -17,14 +17,21 @@ START:  LXI     SP,STAK ;SET UP THE USER STACK
 START1: CALL    CCRLF   ; START A NEW LINE
         LXI     H,SINON ; WITH SIGN-ON MESSAGE
         CALL    COMSG
-START2: CALL    CIMSG   ; GET A LINE OF INPUT FROM THE USER
-        CALL    CCRLF
-        LXI     H,INBUF+2       ; POINT TO THE TEXT IS THE BUFFER
-        CALL    COMSG   ; ECHO THE HWOLE LINE
-        CALL    CCRLF   ; ADD CR, LF
+START2: CALL    CI   ; GET ONE CHAR
+        LXI     H,INBUF+2  
+        CPI     41H     ; CHAR IS CAPS LETTER? (checks minimum)
+        JC      SKIP1   ; IF NOT, JMP
+        CPI     5BH     ; CHECKING AGAIN
+        JNC     SKIP1   ; IF NOT CAPS, JMP
+        JMP     SKIP   ; NO WARNING
+SKIP1:  LXI H,WORD
+        CALL COMSG
+SKIP:   CALL    CCRLF
         JMP     START2  ; KEEP GOING!
 
 SINON:  DB      'WELCOME TO SNOWMAN GAME',CR,LF,0
+WORD:   DB      'GUESS',CR,LF,0
+WARN:   DB      'ONLY CAPITAL',CR,LF,0
 
 ; CONSOLE CHARACTER INTO REGISTER A MASKED TO 7 BITS
 CI:     PUSH    B       ;SAVE REGISTERS
@@ -60,7 +67,6 @@ CCRLF:  MVI     A,CR
 COMSG:  MOV     A,M     ; RETRIEVE ONE CHARACTER
         ORA     A       ; ZERO IS THE TERMINATOR CHARACTER
         RZ              ; RETURN OUT OF THE FUNCTION ON ZERO
-        CALL    COMPARE  ; OTHERWISE, CONVERT TO R13
         CALL    CO      ; OTHERWISE, OUTPUT THE CHARACTER.
         INX     H       ; INCREMENT INDEX REGISTER
         JMP     COMSG   ; KEEP GOING
@@ -87,19 +93,23 @@ CIMSG:  PUSH    B       ; START BY SAVING REGISTERS.
         POP     B
         RET
 
-; CONVERT CHARACTER IN A USING ROT13
 COMPARE:PUSH    B       ; SAVE REGISTERS
         PUSH    D       ; Pushes value out of register and adds it to stack
-        PUSH    H
+        PUSH    H    
         CPI     41H     ; CHAR IS CAPS LETTER? (checks minimum)
         JC      SKIP1   ; IF NOT, JMP
         CPI     5BH     ; CHECKING AGAIN
         JNC     SKIP1   ; IF NOT CAPS, JMP
-        CPI     4DH     ; OVER 77? (PAST M?)
-        JC      SKIP    ; IF NO, THEN ADD 13
-        JZ      SKIP    ; IF EQUAL, ADD 13.
-        SBI     0DH     ; IF LESS, THEN SUB 13
-        JMP     SKIP1   ; NO ADDING
+        JMP     SKIP   ; NO WARNING
+SKIP1:  LXI H,WORD
+        CALL COMSG
+        RET
+SKIP:   
+        POP     H       ; RESTORE REGISTERS
+        POP     D
+        POP     B
+        RET
+
 SKIP:   ADI     0DH     ; ADDING 13
 SKIP1:  POP     H       ; RESTORE REGISTERS
         POP     D
