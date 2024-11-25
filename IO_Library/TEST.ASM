@@ -18,7 +18,7 @@ START1: CALL    CCRLF   ; START A NEW LINE
         LXI     H,SINON ; WITH SIGN-ON MESSAGE
         CALL    COMSG
 START2: CALL    CI   ; GET ONE CHAR
-        ;         CALL    COMPARE 
+        CALL    COMPARE 
         CALL    CCRLF
         JMP     START2  ; KEEP GOING!
 
@@ -67,7 +67,7 @@ COMSG:  MOV     A,M     ; RETRIEVE ONE CHARACTER
 CHECK:  MOV     A,M     ; RETRIEVE ONE CHARACTER
         ORA     A       ; ZERO IS THE TERMINATOR CHARACTER
         RZ              ; RETURN OUT OF THE FUNCTION ON ZERO
-        CMP     E
+        CPI     E
         JZ      COR
         INX     H       ; INCREMENT INDEX REGISTER
         JMP     CHECK   ; KEEP GOING
@@ -110,13 +110,21 @@ COMPARE:PUSH    B       ; START BY SAVING REGISTERS.
         
 
 
-
 COR:    LXI     H,SINON
         CALL    COMSG
         POP     H       ; RESTORE REGISTERS
         POP     D
         POP     B
         END
+
+SPMSG:  XTHL                    ; GET "RETURN ADDRESS" TO HL
+        XRA     A               ; CLEAR FLAGS AND ACCUMULATOR
+        ADD     M               ; GET ONE MESSAGE CHARACTER
+        INX     H               ; POINT TO NEXT
+        XTHL                    ; RESTORE STACK FOR
+        RZ                      ; RETURN IF DONE
+        CALL    CO              ; ELSE DISPLAY CHARACTER
+        JMP     SPMSG           ; AND DO ANOTHER
 
 INBUF:  DS      83      ;LINE INPUT BUFFER
         CALL    CCRLF   ; ADD CR, LF

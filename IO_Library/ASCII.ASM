@@ -4,36 +4,27 @@ LF      EQU     0AH     ; LINE FEED
 CTRLZ   EQU     1AH     ;OPERATOR INTERRUPT
 
 ;CP/M BDOS FUNCTIONS
-RCONF   EQU     1    ; READ CON: INTO (A)
-WCONF   EQU     2      ;WRITE (A) INTO CON:
-RBUFF   EQU     10      ;READ A CONSOLE LINE FUNCTION
+RCONF   EQU     1    
+WCONF   EQU     2      
+RBUFF   EQU     10      
 
 ;CP/M ADDRESSES
-RBOOT   EQU     0       ;REBOOT CP/M SYSTEM
-BDOS    EQU     5       ; THE SYSTEM CALL ENTRY
-TPA     EQU     100H    ; TRANSIENT PROGRAM AREA
-        ORG     TPA     ;ASSEMBLY PROGRAM FOR TPA
+RBOOT   EQU     0     
+BDOS    EQU     5      
+TPA     EQU     100H  
+        ORG     TPA    
 
-START:  LXI	SP,STAK		; INTIALIZE STACK POINTER
-    CALL	CCRLF		; NEWLINE
-	LXI	H,WORD		; DISPLAY WORD TO GUESS
-    CALL COMSG
-MAIN:   LXI H,PROMPT	; PROMPT USER INPUT
-	CALL	COMSG
-	CALL	CI
-    LXI	H,INBUF+1	; PARSE	THE INPUT
-	CALL	COMPARE
-MAIN2: CALL    CIMSG   ; GET A LINE OF INPUT FROM THE USER
-        CALL    CCRLF
-        LXI     H,INBUF+2       ; POINT TO THE TEXT IS THE BUFFER		
+START:  LXI	SP,STAK		
+        CALL	CCRLF		
+	CALL    SPMSG	; DISPLAY WORD TO GUESS
+        DB  'GUESS THE WORD (MAKE SURE TO USE ONLY CAPITALS)',CR,LF,0
+	
 
-; FIRST, WE INITIALIZE THE CARRIAGE RETURN AND LINEFEED TO THE CONSOLE.
 CCRLF:  MVI     A,CR
         CALL    CO
         MVI     A,LF
         JMP     CO
 
-; PRINT MESSAGE TO THE CONSOLE
 COMSG:  MOV     A,M             ; GET A CHARACTER
         ORA     A               ; ZERO IS THE TERMINATOR
         RZ                      ; RETURN ON ZERO
@@ -41,7 +32,6 @@ COMSG:  MOV     A,M             ; GET A CHARACTER
         INX     H               ; POINT TO THE NEXT ONE
         JMP     COMSG           ; LOOP
 
-; INPUT CONSOLE MESSAGE INTO THE BBUFFER USING THIS FUCNTION
 CIMSG:  PUSH    B       ; START BY SAVING REGISTERS.
         PUSH    D
         PUSH    H
@@ -63,22 +53,6 @@ CIMSG:  PUSH    B       ; START BY SAVING REGISTERS.
         POP     B
         RET
 
-
-WORD:   DB  'GUESS',CR,LF,0
-WARN:   DB  'ONLY CAPITAL LETTERS',CR,LF,0
-PROMT:  DB  'GUESS THE WORD (MAKE SURE TO USE ONLY CAPITALS)',CR,LF,0
-
-COMPARE:    
-        CPI     41H     ; CHAR IS CAPS LETTER? (checks minimum)
-        JC      SKIP1   ; IF NOT, JMP
-        CPI     5BH     ; CHECKING AGAIN
-        JNC     SKIP1   ; IF NOT CAPS, JMP
-        JMP     SKIP   ; NO WARNING
-SKIP1:  LXI H,WARN
-SKIP:   POP     H       ; RESTORE REGISTERS
-        POP     D
-        POP     B
-        RET
         
 ; CHARACTER IN REGISTER A OUTPUT TO CONSOLE 
 CO:     PUSH    B       ;SAVE REGISTERS
@@ -91,6 +65,17 @@ CO:     PUSH    B       ;SAVE REGISTERS
         POP     D
         POP     B
         RET
+
+SPMSG:  XTHL                    ; GET "RETURN ADDRESS" TO HL
+        XRA     A               ; CLEAR FLAGS AND ACCUMULATOR
+        ADD     M               ; GET ONE MESSAGE CHARACTER
+        INX     H               ; POINT TO NEXT
+        XTHL                    ; RESTORE STACK FOR
+        RZ                      ; RETURN IF DONE
+        CALL    CO              ; ELSE DISPLAY CHARACTER
+        JMP     SPMSG           ; AND DO ANOTHER
+
+        
 INBUF:  DS      83      ;LINE INPUT BUFFER
         CALL    CCRLF   ; ADD CR, LF
         JMP     MAIN2  ; KEEP GOING
