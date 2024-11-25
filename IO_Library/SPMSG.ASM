@@ -104,13 +104,6 @@ CO:     PUSH    B
         POP     B
         RET             ; Return
 
-; Messages
-MSG:    DB      'Guess the letter: ', 0
-FIR:    DB      'FIRST CHAR!', CR, LF, 0
-SEC:    DB      'SECOND CHAR',CR,LF,0
-THR:    DB      'THIRD CHAR',CR,LF,0
-FAIL:   DB      'Wrong', CR, LF, 0
-TEST:   DB      'TEST', CR, LF, 0
 
 ; Stack space
 STAK:   DS      64      ; Reserve stack space
