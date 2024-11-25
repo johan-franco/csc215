@@ -10,8 +10,8 @@ TPA     EQU     100H    ; Transient Program Area
         ORG     TPA
 
 START:  LXI     SP,STAK ; Set up the stack
-        CALL    SPMSG   
-        DB      'Guess the letter: '  
+        CALL    CCRLF   
+        LXI     H,MSG   
         CALL    COMSG   ; Display the message
 
 MAIN:   CALL    CI     
@@ -90,22 +90,13 @@ CO:     PUSH    B
         POP     B
         RET             ; Return
 
-SPMSG:  XTHL                    ; GET "RETURN ADDRESS" TO HL
-        XRA     A               ; CLEAR FLAGS AND ACCUMULATOR
-        ADD     M               ; GET ONE MESSAGE CHARACTER
-        INX     H               ; POINT TO NEXT
-        XTHL                    ; RESTORE STACK FOR
-        RZ                      ; RETURN IF DONE
-        CALL    CO              ; ELSE DISPLAY CHARACTER
-        JMP     SPMSG           ; AND DO ANOTHER
-
-
 ; Messages
 MSG:    DB      'Guess the letter: ', 0
 FIR:    DB      'FIRST CHAR!', CR, LF, 0
 SEC:    DB      'SECOND CHAR',CR,LF,0
 THR:    DB      'THIRD CHAR',CR,LF,0
-FAIL:   DB      'Wrong, try again!', CR, LF, 0
+FAIL:   DB      'Wrong', CR, LF, 0
+TEST:   DB      'TEST', CR, LF, 0
 
 ; Stack space
 STAK:   DS      64      ; Reserve stack space
