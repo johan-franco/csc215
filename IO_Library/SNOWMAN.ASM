@@ -23,24 +23,23 @@ MAIN:   CALL    CI
 
         CPI     'A'
         JZ      SUS 
-
+        
         CPI     'T'
         JZ      SUT
-        
         JMP     FAILURE ; Jump to display message
 
 SUO:    CALL    CCRLF
-        LXI     H,FIR    ; Load success message
+        LXI     H,FIR    
         CALL    DISPLAY
         JMP     MAIN
 
 SUS:    CALL    CCRLF
-        LXI     H,SEC    ; Load success message
+        LXI     H,SEC    
         CALL    DISPLAY
         JMP     MAIN
 
 SUT:    CALL    CCRLF
-        LXI     H,THR    ; Load success message
+        LXI     H,THR    
         CALL    DISPLAY
         JMP     MAIN
 
@@ -49,12 +48,12 @@ FAILURE:CALL    CCRLF
         CALL    DISPLAY
         JMP     MAIN
 
-DISPLAY:CALL    COMSG   ; Display the message
-        CALL    CCRLF   ; Print newline
+DISPLAY:CALL    COMSG   
+        CALL    CCRLF 
         RET
 
-EXIT:   CALL    CCRLF   ; Print a newline before exiting
-        END             ; Exit program
+EXIT:   CALL    CCRLF  
+        RET             ; Exit program
 
 
 COMSG:  MOV     A,M     ; RETRIEVE ONE CHARACTER
