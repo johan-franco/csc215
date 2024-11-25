@@ -13,15 +13,14 @@ BDOS    EQU     5       ; THE SYSTEM CALL ENTRY
 TPA     EQU     100H    ; TRANSIENT PROGRAM AREA
         ORG     TPA     ;ASSEMBLY PROGRAM FOR TPA
 
-START:  LXI SP,STAK     ; Set up stack
-        CALL CCRLF      ; Newline
-        LXI H,SINON     ; Load welcome message
-        CALL COMSG      ; Display it
-START2: CALL CI         ; Get input character
-        CALL COMPARE    ; Compare input to "GUESS"
-        CALL CCRLF      ; Newline
-        JMP START2      ; Loop
-
+START:  LXI     SP,STAK ;SET UP THE USER STACK
+START1: CALL    CCRLF   ; START A NEW LINE
+        LXI     H,SINON ; WITH SIGN-ON MESSAGE
+        CALL    COMSG
+START2: CALL    CI   ; GET ONE CHAR
+        ;         CALL    COMPARE 
+        CALL    CCRLF
+        JMP     START2  ; KEEP GOING!
 
 SINON:  DB      'WELCOME TO SNOWMAN GAME',CR,LF,0
 WORD:   DB      'GUESS',CR,LF,0
@@ -52,12 +51,10 @@ CO:     PUSH    B       ;SAVE REGISTERS
         RET
 
 ; FIRST, WE INITIALIZE THE CARRIAGE RETURN AND LINEFEED TO THE CONSOLE.
-CCRLF:  MVI A,CR
-        CALL CO
-        MVI A,LF
-        CALL CO
-        RET
-
+CCRLF:  MVI     A,CR
+        CALL    CO
+        MVI     A,LF
+        JMP     CO
 
 ; PRINT MESSAGE TO THE CONSOLE 
 COMSG:  MOV     A,M     ; RETRIEVE ONE CHARACTER

@@ -1,64 +1,67 @@
-; Small ver of snowman
 CR      EQU     0DH     ; Carriage Return
 LF      EQU     0AH     ; Line Feed
 
 ; CP/M BDOS Functions
-RCONF   EQU     1       ; Read console input to (A)
-WCONF   EQU     2       ; Write (A) to console
-BDOS    EQU     5       ; BDOS system call entry
+RCONF   EQU     1     
+WCONF   EQU     2    
+BDOS    EQU     5      
 
 TPA     EQU     100H    ; Transient Program Area
-        ORG     TPA     ; Start program at TPA
+        ORG     TPA
 
 START:  LXI     SP,STAK ; Set up the stack
-        CALL    CCRLF   ; 
-        LXI     H,MSG   ; 
-        CALL    COMSG   ; 
+        CALL    CCRLF   
+        LXI     H,MSG   
+        CALL    COMSG   ; Display the message
 
-MAIN:   CALL    CI      ; Get input character
-        CPI     'A'     ; Compare input with 'A'
+MAIN:   CALL    CI     
+        CPI     'e'  
+        JZ      EXIT    
+        CPI     'A'   
         JZ      SUCCESS ; If equal, jump to success
-        LXI     H,FAIL  ; 
-        CALL    CCRLF
-        JMP     DISPLAY
+        JMP     FAILURE ; Jump to display message
 
-SUCCESS:
+SUCCESS:CALL    CCRLF
         LXI     H,OK    ; Load success message
         CALL    DISPLAY
+        JMP     MAIN
+FAILURE:CALL    CCRLF
+        LXI     H,FAIL  ; Otherwise, load failure message
+        CALL    DISPLAY
+        JMP     MAIN
 
-DISPLAY:
-        CALL    COMSG   ; Display the message
+DISPLAY:CALL    COMSG   ; Display the message
         CALL    CCRLF   ; Print newline
-        JMP     MAIN    ; Repeat
+        RET
 
-; Subroutine to print a message to console
-COMSG:  MOV     A,M     ; Load character from memory
-        ORA     A       
-        RZ              
-        CALL    CO      ; Print character
-        INX     H       ; Increment pointer
-        JMP     COMSG   
+EXIT:   CALL    CCRLF   ; Print a newline before exiting
+        END             ; Exit program
 
+
+COMSG:  MOV     A,M     ; RETRIEVE ONE CHARACTER
+        ORA     A       ; ZERO IS THE TERMINATOR CHARACTER
+        RZ              ; RETURN OUT OF THE FUNCTION ON ZERO
+        CALL    CO      ; OTHERWISE, OUTPUT THE CHARACTER.
+        INX     H       ; INCREMENT INDEX REGISTER
+        JMP     COMSG   ; KEEP GOING
 
 CCRLF:  MVI     A,CR
         CALL    CO
         MVI     A,LF
         JMP     CO
 
-
-CI:     PUSH    B       ;SAVE REGISTERS
+CI:     PUSH    B    
         PUSH    D
         PUSH    H
-        MVI     C,RCONF ;READ FUNCTION IN (C)
-        CALL    BDOS
-        ANI     7FH     ;MASK TO 7 BITS
-        POP     H       ;RESTORE REGISTERS
-        POP     D       
+        MVI     C,RCONF ; Read console function
+        CALL    BDOS    ; Call BDOS
+        ANI     7FH     
+        POP     H       ; Restore registers
+        POP     D
         POP     B
-        RET
+        RET             ; Return with input in A
 
-; CHARACTER IN REGISTER A OUTPUT TO CONSOLE 
-CO:     PUSH    B       ;SAVE REGISTERS
+CO:     PUSH    B     
         PUSH    D
         PUSH    H
         MVI     C,WCONF 
@@ -67,12 +70,12 @@ CO:     PUSH    B       ;SAVE REGISTERS
         POP     H       
         POP     D
         POP     B
-        RET
+        RET             ; Return
 
 ; Messages
 MSG:    DB      'Guess the letter: ', 0
 OK:     DB      'Correct!', CR, LF, 0
-FAIL:   DB      'Wrong', CR, LF, 0
+FAIL:   DB      'Wrong, try again!', CR, LF, 0
 
 ; Stack space
 STAK:   DS      64      ; Reserve stack space
