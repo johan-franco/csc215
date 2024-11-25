@@ -17,14 +17,33 @@ START:  LXI     SP,STAK ; Set up the stack
 MAIN:   CALL    CI     
         CPI     'e'  
         JZ      EXIT    
-        CPI     'A'   
-        JZ      SUCCESS ; If equal, jump to success
+
+        CPI     'C'   
+        JZ      SUO 
+
+        CPI     'A'
+        JZ      SUS 
+
+        CPI     'T'
+        JZ      SUT
+        
         JMP     FAILURE ; Jump to display message
 
-SUCCESS:CALL    CCRLF
-        LXI     H,OK    ; Load success message
+SUO:    CALL    CCRLF
+        LXI     H,FIR    ; Load success message
         CALL    DISPLAY
         JMP     MAIN
+
+SUS:    CALL    CCRLF
+        LXI     H,SEC    ; Load success message
+        CALL    DISPLAY
+        JMP     MAIN
+
+SUT:    CALL    CCRLF
+        LXI     H,THR    ; Load success message
+        CALL    DISPLAY
+        JMP     MAIN
+
 FAILURE:CALL    CCRLF
         LXI     H,FAIL  ; Otherwise, load failure message
         CALL    DISPLAY
@@ -74,7 +93,9 @@ CO:     PUSH    B
 
 ; Messages
 MSG:    DB      'Guess the letter: ', 0
-OK:     DB      'Correct!', CR, LF, 0
+FIR:    DB      'FIRST CHAR!', CR, LF, 0
+SEC:    DB      'SECOND CHAR',CR,LF,0
+THR:    DB      'THIRD CHAR',CR,LF,0
 FAIL:   DB      'Wrong, try again!', CR, LF, 0
 
 ; Stack space
