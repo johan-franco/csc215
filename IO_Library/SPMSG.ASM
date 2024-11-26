@@ -5,12 +5,20 @@ LF      EQU     0AH     ; Line Feed
 ; CP/M BDOS Functions
 RCONF   EQU     1     
 WCONF   EQU     2    
-BDOS    EQU     5      
+BDOS    EQU     5    
+
+C_FLAG  EQU     200H    ; 1 if 'C' guessed
+A_FLAG  EQU     201H    ; 1 if 'A' guessed
+T_FLAG  EQU     202H    ; 1 if 'T' guessed
 
 TPA     EQU     100H    ; Transient Program Area
         ORG     TPA
 
 START:  LXI     SP,STAK ; Set up the stack
+        MVI     A,0     ; Initialize flags
+        STA     C_FLAG
+        STA     A_FLAG
+        STA     T_FLAG
         CALL    CCRLF 
         CALL    SPMSG
         DB      'Guess the letter: ', 0
@@ -27,25 +35,60 @@ MAIN:   CALL    CI
         
         CPI     'T'
         JZ      SUT
+
+        CPI     'CAT'
+        JZ      CONG
+
         JMP     FAILURE ; Jump to display message
 
-SUO:    CALL    CCRLF
+UPDATE_PROGRESS:
+        ; Check if all flags are set
+        LDA     C_FLAG
+        CMP     1
+        JNZ     MAIN
+
+        LDA     A_FLAG
+        CMP     1
+        JNZ     MAIN
+
+        LDA     T_FLAG
+        CMP     1
+        JNZ     MAIN
+
+        JMP     CONG     ; If all flags are 1, show success message
+
+SUO:    MVI     A,1
+        STA     C_FLAG
+        CALL    UPDATE_PROGRESS
+        CALL    CCRLF
         CALL    SPMSG
-        DB      'FIRST CHAR!', CR, LF, 0
+        DB      'C__', CR, LF, 0
         CALL    CCRLF
         JMP     MAIN
 
-SUS:    CALL    CCRLF
+SUS:    MVI     A,1
+        STA     A_FLAG
+        CALL    UPDATE_PROGRESS
+        CALL    CCRLF
         CALL    SPMSG
-        DB      'SECOND CHAR',CR,LF,0
+        DB      '_A_',CR,LF,0
         CALL    CCRLF  
         JMP     MAIN
 
-SUT:    CALL    CCRLF
+SUT:    MVI     A,1
+        STA     T_FLAG
+        CALL    UPDATE_PROGRESS
+        CALL    CCRLF
         CALL    SPMSG
-        DB      'THIRD CHAR',CR,LF,0
+        DB      '__T',CR,LF,0
         CALL    CCRLF
         JMP     MAIN
+
+CONG:   CALL    CCRLF
+        CALL    SPMSG
+        DB      'You guessed correctly!',CR,LF,0
+        CALL    CCRLF
+        CALL    EXIT
 
 FAILURE:CALL    CCRLF
         CALL    SPMSG  ; Otherwise, load failure message
@@ -93,6 +136,28 @@ CI:     PUSH    B
         POP     B
         RET             ; Return with input in A
 
+; INPUT CONSOLE MESSAGE INTO THE BBUFFER USING THIS FUCNTION
+CIMSG:  PUSH    B       ; START BY SAVING REGISTERS.
+        PUSH    D
+        PUSH    H
+        LXI     H,INBUF+1       ; ZERO CHARACTER COUNTER
+        MVI     M,0
+        DCX     H       ; DECREMENTS THE INDEX REGISTER PAIR.
+        MVI     M,80
+        XCHG            ; SEND INBUFF POINTER TO DE REGISTERS
+        MVI     C,RBUFF ; SET UP READ BUFFER FUNCTION
+        CALL    BDOS    ; INPUT A LINE
+        LXI     H,INBUF+1 ; GET THE CHARACTER COUNTER
+        MOV     E,M
+        MVI     D,0
+        DAD     D
+        INX     H
+        MVI     M,0
+        POP     H
+        POP     D
+        POP     B
+        RET
+
 CO:     PUSH    B     
         PUSH    D
         PUSH    H
@@ -104,8 +169,16 @@ CO:     PUSH    B
         POP     B
         RET             ; Return
 
+; Messages
+MSG:    DB      'Guess the letter: ', 0
+FIR:    DB      'C', CR, LF, 0
+SEC:    DB      '_A_',CR,LF,0
+THR:    DB      '__T',CR,LF,0
+FAIL:   DB      'Wrong', CR, LF, 0
+TEST:   DB      'TEST', CR, LF, 0
 
 ; Stack space
 STAK:   DS      64      ; Reserve stack space
 
         END
+        
