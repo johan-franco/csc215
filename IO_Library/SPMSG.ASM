@@ -5,20 +5,12 @@ LF      EQU     0AH     ; Line Feed
 ; CP/M BDOS Functions
 RCONF   EQU     1     
 WCONF   EQU     2    
-BDOS    EQU     5    
-
-C_FLAG  EQU     200H    ; 1 if 'C' guessed
-A_FLAG  EQU     201H    ; 1 if 'A' guessed
-T_FLAG  EQU     202H    ; 1 if 'T' guessed
+BDOS    EQU     5      
 
 TPA     EQU     100H    ; Transient Program Area
         ORG     TPA
 
 START:  LXI     SP,STAK ; Set up the stack
-        MVI     A,0     ; Initialize flags
-        STA     C_FLAG
-        STA     A_FLAG
-        STA     T_FLAG
         CALL    CCRLF 
         CALL    SPMSG
         DB      'Guess the letter: ', 0
@@ -35,60 +27,25 @@ MAIN:   CALL    CI
         
         CPI     'T'
         JZ      SUT
-
-        CPI     'CAT'
-        JZ      CONG
-
         JMP     FAILURE ; Jump to display message
 
-UPDATE_PROGRESS:
-        ; Check if all flags are set
-        LDA     C_FLAG
-        CMP     1
-        JNZ     MAIN
-
-        LDA     A_FLAG
-        CMP     1
-        JNZ     MAIN
-
-        LDA     T_FLAG
-        CMP     1
-        JNZ     MAIN
-
-        JMP     CONG     ; If all flags are 1, show success message
-
-SUO:    MVI     A,1
-        STA     C_FLAG
-        CALL    UPDATE_PROGRESS
-        CALL    CCRLF
+SUO:    CALL    CCRLF
         CALL    SPMSG
         DB      'C__', CR, LF, 0
         CALL    CCRLF
         JMP     MAIN
 
-SUS:    MVI     A,1
-        STA     A_FLAG
-        CALL    UPDATE_PROGRESS
-        CALL    CCRLF
+SUS:    CALL    CCRLF
         CALL    SPMSG
         DB      '_A_',CR,LF,0
         CALL    CCRLF  
         JMP     MAIN
 
-SUT:    MVI     A,1
-        STA     T_FLAG
-        CALL    UPDATE_PROGRESS
-        CALL    CCRLF
+SUT:    CALL    CCRLF
         CALL    SPMSG
         DB      '__T',CR,LF,0
         CALL    CCRLF
         JMP     MAIN
-
-CONG:   CALL    CCRLF
-        CALL    SPMSG
-        DB      'You guessed correctly!',CR,LF,0
-        CALL    CCRLF
-        CALL    EXIT
 
 FAILURE:CALL    CCRLF
         CALL    SPMSG  ; Otherwise, load failure message
@@ -135,7 +92,6 @@ CI:     PUSH    B
         POP     D
         POP     B
         RET             ; Return with input in A
-
 ; INPUT CONSOLE MESSAGE INTO THE BBUFFER USING THIS FUCNTION
 CIMSG:  PUSH    B       ; START BY SAVING REGISTERS.
         PUSH    D
@@ -181,4 +137,3 @@ TEST:   DB      'TEST', CR, LF, 0
 STAK:   DS      64      ; Reserve stack space
 
         END
-        
