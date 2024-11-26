@@ -13,7 +13,7 @@ TPA     EQU     100H    ; Transient Program Area
 START:  LXI     SP,STAK ; Set up the stack
         CALL    CCRLF 
         CALL    SPMSG
-        DB      'Guess the letter: ', 0
+        DB      'Guess the letter (USE CAPITAL LETTERS):', 0
 
 MAIN:   CALL    CI     
         CPI     'e'  
@@ -126,7 +126,7 @@ CO:     PUSH    B
         RET             ; Return
 
 ; Messages
-MSG:    DB      'Guess the letter: ', 0
+MSG:    DB      'Guess the letter (USE CAPITAL LETTERS): ', 0
 FIR:    DB      'C', CR, LF, 0
 SEC:    DB      '_A_',CR,LF,0
 THR:    DB      '__T',CR,LF,0
