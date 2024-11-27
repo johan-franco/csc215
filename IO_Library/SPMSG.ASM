@@ -127,7 +127,7 @@ CO:     PUSH    B
 
 ; Messages
 MSG:    DB      'Guess the letter (USE CAPITAL LETTERS): ', 0
-FIR:    DB      'C', CR, LF, 0
+FIR:    DB      '___', CR, LF, 0
 SEC:    DB      '_A_',CR,LF,0
 THR:    DB      '__T',CR,LF,0
 FAIL:   DB      'Wrong', CR, LF, 0

@@ -13,8 +13,11 @@ START:  LXI     SP,STAK ; Set up the stack
         CALL    CCRLF   
         LXI     H,MSG   
         CALL    COMSG   ; Display the message
+        LDA     
 
-MAIN:   CALL    CI     
+MAIN:   CALL    CI
+        CALL    COMPARE
+        DB
         CPI     'e'  
         JZ      EXIT    
 
@@ -27,6 +30,14 @@ MAIN:   CALL    CI
         CPI     'T'
         JZ      SUT
         JMP     FAILURE ; Jump to display message
+
+COMPARE:        XTHL
+                MOV     E,A
+                MOV     A,M
+                CMP     E
+                H+Buffer
+                CALL    COMPARE
+
 
 SUO:    CALL    CCRLF
         LXI     H,FIR    
@@ -91,7 +102,7 @@ CO:     PUSH    B
         RET             ; Return
 
 ; Messages
-MSG:    DB      'Guess the letter: ', 0
+WORD:   DB      'Guess', 0
 FIR:    DB      'FIRST CHAR!', CR, LF, 0
 SEC:    DB      'SECOND CHAR',CR,LF,0
 THR:    DB      'THIRD CHAR',CR,LF,0
