@@ -7,6 +7,6 @@ char **argv;
     total = 0;
     for (i=1; i <= argc; ++i)
         total = total +  argv[i];
-    return total;
+        printf(total);
     printf(total);
 }
