@@ -1,7 +1,12 @@
 #include <stdio.h>
 main(argc,argv) 
 int argc;
-int **argv;
+char **argv;
 {
-    int i;
+    int i, total;
+    total = 0;
+    for (i=1; i <= argc; ++i)
+        total = total +  argv[i];
+    return total;
+    printf(total);
 }
