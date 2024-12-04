@@ -1,11 +1,21 @@
 #include <stdio.h>
-main ()
+
+main(argc, argv)
+int argc;
+char** argv;
 {
-    int c, nl;
-    nl = 0;
-    while((c = getchar()) != EOF){
-        if (c == "\n")    
-            ++nl;
+    FILE *infp;
+    int c;
+
+    if (argc != 2) {
+        printf("Input of one file needed\n");
+        return;
     }
-    printf("%d\n", nl);
+    printf("Starting the count!\n");
+    infp = fopen(argv[1], "r");
+    while ((c = fgetc(infp)) != EOF) {
+        if 
+    }
+    fclose(infp);
+
 }
