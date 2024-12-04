@@ -18,17 +18,13 @@ char** argv;
     while ((c = fgetc(infp)) != EOF) {
         if(c == '\n') {
             nl+=1;
-            printf("Incrementing newlines %d\n", nl);
         }
         else if (c == "  "){
             b+=1;
-            printf("Incrementing blank %d\n", b);
         }
         else if (c == '\t') {
             t+=1;
-            printf("Incrementing tab %d\n", t);
         }
-        printf("Didn't find anything or i can interpret what char is %s\n", c);
     }
     printf("Num of tabs %d \n Num of spaces %d \n Num of newlines %d \n", t,b,nl);
     fclose(infp);
