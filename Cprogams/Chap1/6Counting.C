@@ -5,8 +5,7 @@ int argc;
 char** argv;
 {
     FILE *infp;
-    int nl, t, b;
-    char c;
+    int nl, t, b, c;
     nl = 0;
     t = 0;
     b = 0;
@@ -21,7 +20,7 @@ char** argv;
             nl+=1;
             printf("Incrementing newlines %d\n", nl);
         }
-        else if (c == " "){
+        else if (c == "  "){
             b+=1;
             printf("Incrementing blank %d\n", b);
         }
