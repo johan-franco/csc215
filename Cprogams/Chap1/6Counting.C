@@ -3,7 +3,7 @@ main ()
 {
     int c, nl;
     while((c = getchar()) != EOF){
-        if (c != "\nt")    
+        if (c =! "\nt")    
             ++nl;
     }
     printf("%d\n", nl);
