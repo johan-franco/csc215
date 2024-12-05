@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "CLISUM.C": "cpp"
+        "CLISUM.C": "cpp",
+        "6Counting.C": "cpp",
+        "7Replacing.C": "cpp"
     }
 }
