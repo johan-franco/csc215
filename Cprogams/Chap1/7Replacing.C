@@ -4,7 +4,7 @@ main(argc, argv)
 int argc;
 char** argv;
 {
-
+/*Both tabs and spaces were shortened to one space*/
     FILE *infp, *outfp;
     int c; 
     int prev;
