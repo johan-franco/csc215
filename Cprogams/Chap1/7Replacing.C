@@ -1,14 +1,13 @@
 #include <stdio.h>
 
-
-main()
+main(argc, argv)
 int argc;
 char** argv;
 {
 
     FILE *infp, *outfp;
-    int c, prev = EOF; 
-
+    int c; 
+    prev = EOF;
     if (argc != 3) {
         printf("Both input and output needed\n");
         return 1;
