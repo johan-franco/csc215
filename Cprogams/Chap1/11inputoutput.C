@@ -1,4 +1,20 @@
 #include <stdio.h>
+/*was succesful as num and spaces were ignored so only one 'word' was outputted from each line*/
+
+check(p)
+int p; 
+{
+    if (p >= '0' && p <= '9') {
+        return 1;
+    }
+    if (p == ' ' || p == '\t') {
+        return 2;
+    }
+    if (p == '-' || p == '+') {
+        return 1;
+    }
+    return 0;
+}
 
 main(argc, argv)
 int argc;
@@ -26,23 +42,16 @@ char** argv;
 
     while ((c = fgetc(infp)) != EOF) {
 
-        if (c >= '0' && c<='9') {
-	        prev = c;
-            continue;
-        }
-        else if (c == ' ' || c =='\t') {
-	        prev = c;
-            continue;
-        }
-
-        else if (c == '-' || c=='+') {
-	        prev = c;
-            continue;
+        if (check(c)==1){
+            prev = c;
         }
         else if (c == '\n') {
 	        fputc(c, outfp); 
             putchar(c); 
             prev = c;
+            continue;
+        }
+        else if( check(prev) == 0 && check(c) == 2) {
             continue;
         }
         fputc(c, outfp); 
