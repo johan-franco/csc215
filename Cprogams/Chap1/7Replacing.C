@@ -26,10 +26,18 @@ char** argv;
     }
 
     while ((c = fgetc(infp)) != EOF) {
+        if (c == '\t') {
+            fputc(c, outfp); 
+            putchar(c);
+            prev = c;
+            continue;
+        }
+
         if (c == ' ' && prev == ' ') {
 	    prev = c;
             continue;
         }
+
         fputc(c, outfp); 
         putchar(c);      
         prev = c;       
