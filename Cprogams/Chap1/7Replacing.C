@@ -13,7 +13,7 @@ char** argv;
         printf("Both input and output needed\n");
         return 1;
     }
-    printf("Changing multiple blanks to one");
+    printf("Changing multiple blanks to one\n");
 
     if ((infp = fopen(argv[1], "r")) == NULL) {
         printf("Can’t open %s\n", argv[1]);
