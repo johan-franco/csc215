@@ -53,7 +53,9 @@ char** argv;
             continue;
         }
         else if( check(prev) == 0 && check(c) == 2) {
-            continue;
+            while ((c = fgetc(infp)) != '\n' || (c = fgetc(infp)) != EOF){
+                continue;
+            }
         }
         fputc(c, outfp); 
         putchar(c);      
