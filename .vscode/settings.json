@@ -3,6 +3,8 @@
         "CLISUM.C": "cpp",
         "6Counting.C": "cpp",
         "7Replacing.C": "cpp",
-        "11inputoutput.C": "cpp"
+        "11inputoutput.C": "cpp",
+        "CHRNUMS.C": "cpp",
+        "testchr.C": "cpp"
     }
 }
