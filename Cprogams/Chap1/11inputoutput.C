@@ -45,7 +45,6 @@ char** argv;
             prev = c;
             continue;
         }
-        else if([])
         fputc(c, outfp); 
         putchar(c);      
         prev = c;       
