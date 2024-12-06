@@ -26,13 +26,16 @@ char** argv;
     }
 
     while ((c = fgetc(infp)) != EOF) {
+        /* Confused why this doesn't work. Previous program showed it was able to identify them
+        but it can't replace the tab
+
         if (c == '\t') {
             fputc('\t', outfp); 
             putchar('\t');
             prev = c;
             continue;
         }
-
+*/
         if (c == ' ' && prev == ' ') {
 	        prev = c;
             continue;
