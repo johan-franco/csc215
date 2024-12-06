@@ -1,25 +1,17 @@
 #include <stdio.h>
 /*nums and spaces are ignored but other 'words' in the same line are outputted*/
 
-count(p, infp)
-int p; 
-FILE *infp;
-{
-    int count;
-    while ((p = fgetc(infp)) != EOF || (p = fgetc(infp)) != '\n') {
-        count++;
-    }
-    return count;
-}
-
 main(argc, argv)
 int argc;
 char** argv;
 {
     FILE *infp, *outfp;
-    int c; 
-    int prev;
+    int c, prev, count, linenum;
+    linenum = 0;
+    c =0;
     prev = EOF;
+    char** val;
+
     if (argc != 3) {
         printf("Both input and output needed\n");
         return 1;
@@ -37,12 +29,16 @@ char** argv;
     }
 
     while ((c = fgetc(infp)) != EOF) {
-        fputc(count(c,infp),outfp);
-        putchar(c);
-        prev = c; 
-        if (count(c,infp) < 10){
-            printf("Working");
+        if((c = fgetc(infp)) == '\n') {
+            count = 0;
+            linenum++;
         }
+        
+        val[linenum][count] = c;
+        printf("%s\n", val[linenum][count]);
+        count++;
+        printf("%s\n", c);
+
     }
 
     fclose(infp);
