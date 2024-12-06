@@ -19,7 +19,7 @@ char** argv;
         if(c == '\n') {
             nl+=1;
         }
-        else if (c == ' '){
+        else if (c == ' '){ 
             b+=1;
         }
         else if (c == '\t') {

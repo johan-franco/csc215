@@ -1,30 +1,43 @@
 #include <stdio.h>
 
-main(argc, argv)
+
+main()
 int argc;
-char* argv[];
+char** argv;
 {
+
     FILE *infp, *outfp;
-    int c;
+    int c, prev = EOF; 
 
     if (argc != 3) {
         printf("Both input and output needed\n");
-        return;
+        return 1;
     }
-    printf("So, you want to copy %s to %s, eh?...\n", argv[1], argv[2]);
-    printf("Let's do it!\n");
+    printf("Changing multiple blanks to one");
+
     if ((infp = fopen(argv[1], "r")) == NULL) {
         printf("Can’t open %s\n", argv[1]);
-        exit();
+        return 1;
     }
     if ((outfp = fopen(argv[2], "w")) == NULL) {
-        printf("Can’t open %s\n", argv[2]);
-        exit();
+        printf("Can not open %s\n", argv[2]);
+        fclose(infp);
+        return 1;
     }
+
     while ((c = fgetc(infp)) != EOF) {
-        fputc(c, outfp);
-        putchar(c);
+        if (c == ' ' && prev == ' ') {
+	    prev = c;
+            continue;
+        }
+        fputc(c, outfp); 
+        putchar(c);      
+        prev = c;       
     }
+
     fclose(infp);
     fclose(outfp);
+    return 0;
 }
+
+
