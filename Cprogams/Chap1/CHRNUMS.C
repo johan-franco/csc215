@@ -1,49 +1,39 @@
 #include <stdio.h>
-/*nums and spaces are ignored but other 'words' in the same line are outputted*/
+#define  MAXLINE 80
 
 main(argc, argv)
 int argc;
-char** argv;
+char* argv[];
 {
-    FILE *infp, *outfp;
-    int c, prev, count, linenum;
-    linenum = 0;
-    c =0;
-    prev = EOF;
-    char** val;
+    FILE *infp;
+    int ch, wpos, inword;
+    char word[MAXLINE];
 
-    if (argc != 3) {
-        printf("Both input and output needed\n");
-        return 1;
+    if (argc != 2) {
+        printf("Usage: wdatime <infile>\n");
+        exit();
     }
-    printf("Attempting counting char and input");
-
     if ((infp = fopen(argv[1], "r")) == NULL) {
         printf("Can’t open %s\n", argv[1]);
-        return 1;
+        exit();
     }
-    if ((outfp = fopen(argv[2], "w")) == NULL) {
-        printf("Can not open %s\n", argv[2]);
-        fclose(infp);
-        return 1;
-    }
-
-    while ((c = fgetc(infp)) != EOF) {
-        if((c = fgetc(infp)) == '\n') {
-            count = 0;
-            linenum++;
+    wpos = inword = 0;
+    while ((ch = fgetc(infp)) != EOF) {
+        if (ch == ' ' || ch == '\n' || ch == '\t') {
+            if (inword) {
+                word[wpos] = '\0';
+                printf("%s\n", word);
+                wpos = 0;
+            } 
+            inword = 0;
+        } else {            /*  ch is not whitespace */
+            inword = 1;
+            word[wpos++] = ch;
         }
-        
-        val[linenum][count] = c;
-        printf("%s\n", val[linenum][count]);
-        count++;
-        printf("%s\n", c);
-
     }
-
     fclose(infp);
-    fclose(outfp);
-    return 0;
+    if (wpos) {             /* inword when EOF encountered, print last word */
+        word[wpos] = '\0';
+        printf("%s\n", word);
+    }
 }
-
-
