@@ -44,6 +44,7 @@ char** argv;
 
         if (check(c)==1){
             prev = c;
+            continue;
         }
         else if (c == '\n') {
 	        fputc(c, outfp); 
