@@ -7,6 +7,7 @@ char** argv;
 
     FILE *infp, *outfp;
     int c; 
+    int prev;
     prev = EOF;
     if (argc != 3) {
         printf("Both input and output needed\n");
