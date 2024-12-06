@@ -2,6 +2,7 @@
     "files.associations": {
         "CLISUM.C": "cpp",
         "6Counting.C": "cpp",
-        "7Replacing.C": "cpp"
+        "7Replacing.C": "cpp",
+        "11inputoutput.C": "cpp"
     }
 }
