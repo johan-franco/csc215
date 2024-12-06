@@ -25,21 +25,27 @@ char** argv;
     }
 
     while ((c = fgetc(infp)) != EOF) {
-        /* Confused why this doesn't work. Previous program showed it was able to identify them
-        but it can't replace the tab
 
-        if (c == '\t') {
-            fputc('\t', outfp); 
-            putchar('\t');
-            prev = c;
+        if (c >= '0' && c<='9') {
+	        prev = c;
             continue;
         }
-*/
-        if (c == ' ' && prev == ' ') {
+        else if ((c == ' ' || c =='\t') {
 	        prev = c;
             continue;
         }
 
+        else if (c == '-' || c=='+') {
+	        prev = c;
+            continue;
+        }
+        else if (c == '\n') {
+	        fputc(c, outfp); 
+            putchar(c); 
+            prev = c;
+            continue;
+        }
+        else if([])
         fputc(c, outfp); 
         putchar(c);      
         prev = c;       
