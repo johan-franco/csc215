@@ -1,5 +1,5 @@
 #include <stdio.h>
-/*was succesful as num and spaces were ignored so only one 'word' was outputted from each line*/
+/*nums and spaces are ignored but other 'words' in the same line are outputted*/
 
 check(p)
 int p; 
@@ -53,9 +53,10 @@ char** argv;
             continue;
         }
         else if( check(prev) == 0 && check(c) == 2) {
-            while ((c = fgetc(infp)) != '\n' || (c = fgetc(infp)) != EOF){
+            /*while ((c = fgetc(infp)) != '\n' || (c = fgetc(infp)) != EOF){
                 continue;
-            }
+            }*/
+           continue;
         }
         fputc(c, outfp); 
         putchar(c);      
