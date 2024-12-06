@@ -27,14 +27,14 @@ char** argv;
 
     while ((c = fgetc(infp)) != EOF) {
         if (c == '\t') {
-            fputc(c, outfp); 
-            putchar(c);
+            fputc('\t', outfp); 
+            putchar('\t');
             prev = c;
             continue;
         }
 
         if (c == ' ' && prev == ' ') {
-	    prev = c;
+	        prev = c;
             continue;
         }
 
