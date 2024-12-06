@@ -30,7 +30,7 @@ char** argv;
 	        prev = c;
             continue;
         }
-        else if ((c == ' ' || c =='\t') {
+        else if (c == ' ' || c =='\t') {
 	        prev = c;
             continue;
         }
