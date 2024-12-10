@@ -21,8 +21,8 @@ char* argv[];
  
     while ((ch = fgetc(infp)) != EOF) {
         if (ch == '\n') {
-            buffer[newpos++] = '\0'; 
-            printf("%d: %s\n", newpos, buffer); 
+            buffer[newpos] = '\0'; 
+            printf("%d: %s\n", newpos+1, buffer); 
             newpos = 0; 
         }
         else {
@@ -32,8 +32,8 @@ char* argv[];
         }
     }
     if (newpos > 0) {
-        buffer[newpos++] = '\0'; 
-        printf("%d: %s\n", newpos, buffer); 
+        buffer[newpos] = '\0'; 
+        printf("%d: %s\n", newpos+1, buffer); 
     }
 
     fclose(infp);
