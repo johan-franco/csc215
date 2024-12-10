@@ -1,39 +1,37 @@
 #include <stdio.h>
-#define  MAXLINE 80
 
 main(argc, argv)
 int argc;
 char* argv[];
 {
     FILE *infp;
-    int ch, wpos, inword;
-    char word[MAXLINE];
+    int ch, newpos, counter, i;
+    counter = 0;
+    newpos = 0;
+    char* buffer[1024];
 
     if (argc != 2) {
-        printf("Usage: wdatime <infile>\n");
+        printf("Need input file ");
         exit();
     }
     if ((infp = fopen(argv[1], "r")) == NULL) {
         printf("Can’t open %s\n", argv[1]);
         exit();
     }
-    wpos = inword = 0;
+ 
     while ((ch = fgetc(infp)) != EOF) {
-        if (ch == ' ' || ch == '\n' || ch == '\t') {
-            if (inword) {
-                word[wpos] = '\0';
-                printf("%s\n", word);
-                wpos = 0;
-            } 
-            inword = 0;
-        } else {            /*  ch is not whitespace */
-            inword = 1;
-            word[wpos++] = ch;
+        counter++;
+        if (ch == '\n') {
+            newpos = counter - newpos;
+            printf("%d: ", newpos);
+            for (i = 0; i < newpos; ++i) {
+                printf("%c", buffer[i]);
+            }
+            printf('\n');
+        }
+        else {            
+            buffer[counter] = ch;
         }
     }
     fclose(infp);
-    if (wpos) {             /* inword when EOF encountered, print last word */
-        word[wpos] = '\0';
-        printf("%s\n", word);
-    }
 }
