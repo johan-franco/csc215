@@ -5,6 +5,7 @@
         "7Replacing.C": "cpp",
         "11inputoutput.C": "cpp",
         "CHRNUMS.C": "cpp",
-        "testchr.C": "cpp"
+        "testchr.C": "cpp",
+        "BACKWARD.C": "cpp"
     }
 }
