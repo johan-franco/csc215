@@ -5,33 +5,37 @@ int argc;
 char* argv[];
 {
     FILE *infp;
-    int ch, newpos, counter, i;
-    counter = 0;
+    int ch, newpos, i;
+    char buffer[1024]; 
+
     newpos = 0;
-    char* buffer[1024];
 
     if (argc != 2) {
         printf("Need input file ");
-        exit();
+        return 1;
     }
     if ((infp = fopen(argv[1], "r")) == NULL) {
         printf("Can’t open %s\n", argv[1]);
-        exit();
+        return 1;
     }
  
     while ((ch = fgetc(infp)) != EOF) {
-        counter++;
         if (ch == '\n') {
-            newpos = counter - newpos;
-            printf("%d: ", newpos);
-            for (i = 0; i < newpos; ++i) {
-                printf("%c", buffer[i]);
-            }
-            printf('\n');
+            buffer[newpos++] = '\0'; 
+            printf("%d: %s\n", newpos, buffer); 
+            newpos = 0; 
         }
-        else {            
-            buffer[counter] = ch;
+        else {
+            if (newpos < 1024) { 
+                buffer[newpos++] = ch; 
+            }
         }
     }
+    if (newpos > 0) {
+        buffer[newpos++] = '\0'; 
+        printf("%d: %s\n", newpos, buffer); 
+    }
+
     fclose(infp);
+
 }
