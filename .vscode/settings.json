@@ -6,6 +6,7 @@
         "11inputoutput.C": "cpp",
         "CHRNUMS.C": "cpp",
         "testchr.C": "cpp",
-        "BACKWARD.C": "cpp"
+        "BACKWARD.C": "cpp",
+        "PointerMonth.C": "cpp"
     }
 }
