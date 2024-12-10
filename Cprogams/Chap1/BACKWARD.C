@@ -7,9 +7,10 @@ int argc;
 char* argv[];
 {
     FILE *infp;
-    int ch, newpos, i;
+    int ch, newpos, i,en,star;
     char buffer[1024]; 
-    char reversed;
+    char temp;
+
 
     newpos = 0;
 
@@ -25,7 +26,18 @@ char* argv[];
     while ((ch = fgetc(infp)) != EOF) {
         if (ch == '\n') {
             buffer[newpos] = '\0'; 
-            reverse(buffer);
+            en = 0;
+            star = 0;
+            while(buffer[en]!= '\0') {
+                en++;
+            }
+            while(star<en) {
+                temp = buffer[star];
+                buffer[star] = buffer[en];
+                buffer[en] = temp;
+                star++;
+                en--;
+            }
             printf("%s\n", newpos+1, buffer); 
             newpos = 0; 
         }
@@ -37,7 +49,18 @@ char* argv[];
     }
     if (newpos > 0) {
         buffer[newpos] = '\0'; 
-        reverse(buffer)
+        en = 0;
+        star = 0;
+        while(buffer[en]!= '\0') {
+            en++;
+        }
+        while(star<en) {
+            temp = buffer[star];
+            buffer[star] = buffer[en];
+            buffer[en] = temp;
+            star++;
+            en--;
+        }
         printf("%s",buffer); 
     }
 
@@ -45,23 +68,3 @@ char* argv[];
 
 }
 
-
-reverse(str) 
-char str[];
-{
-    int en, star;
-    char temp;
-    en = 0;
-    star = 0;
-    while(str[en]!= '\0') {
-        end++
-    }
-    while(star<en) {
-        temp = str[star];
-        str[star] = str[en];
-        str[en] = temp;
-        start++;
-        en--;
-    }
-
-}
