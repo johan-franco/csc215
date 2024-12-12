@@ -34,9 +34,10 @@ int year, *day_tab;
 }
 
 main() {
-    int month, day, result;
-    month = 3;
+    int month, day, result, year;
+    month = getchar();
     day = 1;
+    year = 2024;
     int *day_tab[13];
     day_tab[0] = 0;
     day_tab[1] = 31;
@@ -53,7 +54,7 @@ main() {
     day_tab[12] = 31;
 
     checkyear(year,day_tab);
-    result = day_of_year(2024, month, day,day_tab); 
+    result = day_of_year(year, month, day,day_tab); 
     printf("%d", result);
     return 1;
 }
