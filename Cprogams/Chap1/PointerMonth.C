@@ -52,6 +52,7 @@ main() {
     day_tab[11] = 30;
     day_tab[12] = 31;
 
+    checkyear(year,day_tab);
     result = day_of_year(2024, month, day,day_tab); 
     printf("%d", result);
     return 1;
