@@ -7,7 +7,7 @@ int year, month, day, *day_tab;
     int i;
 
     for (i = 1; i < month; i++)
-        day += day_tab + i;
+        day += day_tab[i];
 
     return(day); 
 }
@@ -19,7 +19,7 @@ int year, yearday, *pmonth, *pday, *day_tab;
     int i;
 
     for (i = 1; yearday > day_tab + i; i++) {
-        yearday -= day_tab + i;
+        yearday -= day_tab[i];
      }
     *pmonth = i;
     *pday = yearday;
@@ -41,9 +41,9 @@ main() {
     day_tab[11] = 30;
     day_tab[12] = 31;
     int month, day, result;
-    month = 3;
-    day = 4;
-    result = day_of_year(2012, month, day,day_tab); 
+    month = 1;
+    day = 1;
+    result = day_of_year(2000, month, day,day_tab); 
     printf("%d", result);
-    return;
+    return 1;
 }
