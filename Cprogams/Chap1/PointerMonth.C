@@ -35,9 +35,6 @@ int year, *day_tab;
 
 main() {
     int month, day, result, year;
-    month = getchar();
-    day = 1;
-    year = 2024;
     int *day_tab[13];
     day_tab[0] = 0;
     day_tab[1] = 31;
@@ -52,9 +49,20 @@ main() {
     day_tab[10] = 31;
     day_tab[11] = 30;
     day_tab[12] = 31;
+    printf("Enter a date (day month year): ");
+    if (scanf("%d %d %d", &day, &month, &year) == 3) {
+        if (month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+            checkyear(year,day_tab);
+            result = day_of_year(year, month, day,day_tab); 
+            printf("\n%d", result);
+        } 
+        else {
+            printf("Invalid date\n");
+        }
+    } else {
+        printf("Enter three integers\n");
+    }
 
-    checkyear(year,day_tab);
-    result = day_of_year(year, month, day,day_tab); 
-    printf("%d", result);
+
     return 1;
 }
