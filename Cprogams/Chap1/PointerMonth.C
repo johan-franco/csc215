@@ -13,7 +13,7 @@ int year, month, day, *day_tab;
 }
 
 month_day(year, yearday, pmonth, pday,day_tab)
-int year, yearday, *pmonth, *pday, *day_tab;
+int year, yearday, *pmonth, *day_tab;
 {
     
     int i;
@@ -22,7 +22,7 @@ int year, yearday, *pmonth, *pday, *day_tab;
         yearday -= day_tab[i];
      }
     *pmonth = i;
-    *pday = yearday;
+    day_tab[0] = yearday;
 }
 
 checkyear(year, day_tab) 
@@ -50,7 +50,7 @@ main() {
     day_tab[11] = 30;
     day_tab[12] = 31;
     printf("Enter a date (day month year): ");
-    if (scanf("%d %d %d", &day, &month, &year) == 3) {
+    if (scanf("%d %d %d", &day, &month, &year) == 3  ) {
         if (month >= 1 && month <= 12 && day >= 1 && day <= 31) {
             checkyear(year,day_tab);
             result = day_of_year(year, month, day,day_tab); 
