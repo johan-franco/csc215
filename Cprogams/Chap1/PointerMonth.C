@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 day_of_year(year, month, day, day_tab)
-int year, month, day, *daytab;
+int year, month, day, *day_tab;
 {
 
     int i;
@@ -13,7 +13,7 @@ int year, month, day, *daytab;
 }
 
 month_day(year, yearday, pmonth, pday,day_tab)
-int year, yearday, *pmonth, *pday, *daytab;
+int year, yearday, *pmonth, *pday, *day_tab;
 {
     
     int i;
