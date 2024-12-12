@@ -10,7 +10,7 @@ absolute value. What changes would need to be made to the program?
 for the operators (e.g., the user types "times" instead of "*"). Where in
 the program would the necessary changes occur?
 
-        
+        For a specific space in the CALC.C given by Jeff we would implement a change in the case statements that dictate what changes are done. Instead of checking if the case is '*' we would check if it is "times".
 
 3. Suppose that the calculator is to be converted to use C++ double values
 rather than integers. Where would changes need to be made?
