@@ -1,34 +1,49 @@
-int *day_tab[2]; 
+#include <stdio.h>
 
-day_of_year(year, month, day)
-int year, month, day;
+day_of_year(year, month, day, day_tab)
+int year, month, day, *daytab;
 {
-    int i, leap;
 
-    leap = year%4 == 0 && year %100 != 0 || year%400 == 0;
+    int i;
+
     for (i = 1; i < month; i++)
-        day += day_tab[leap][i];
-    return(day);
+        day += day_tab + i;
+
+    return(day); 
 }
 
-month_day(year, yearday, pmonth, pday)
-int yearday, *pmonth, *pday;
+month_day(year, yearday, pmonth, pday,day_tab)
+int year, yearday, *pmonth, *pday, *daytab;
 {
-    int i, leap;
+    
+    int i;
 
-    leap = year%4 == 0 && year %100 != 0 || year%400 == 0;
-    for (i = 1; yearday > day_tab[leap][i]; i++)
-        yearday -= day_tab[leap][i];
+    for (i = 1; yearday > day_tab + i; i++) {
+        yearday -= day_tab + i;
+     }
     *pmonth = i;
     *pday = yearday;
 }
 
-main()
-{
-    daytab[0] = {0, 31, 29, 31, 30, 31,30, 31, 31, 30, 31, 30, 31};
-    day_tab[1] = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    int birthday;
-    birthday = day_of_year(2007,1,22);
-    printf("Yearday of my birthday: %d", birthday);
-
+main() {
+    int *day_tab[13];
+    day_tab[0] = 0;
+    day_tab[1] = 31;
+    day_tab[2] = 28;
+    day_tab[3] = 31;
+    day_tab[4] = 30;
+    day_tab[5] = 31;
+    day_tab[6] = 30;
+    day_tab[7] = 31;
+    day_tab[8] = 31;
+    day_tab[9] = 30;
+    day_tab[10] = 31;
+    day_tab[11] = 30;
+    day_tab[12] = 31;
+    int month, day, result;
+    month = 3;
+    day = 4;
+    result = day_of_year(2012, month, day,day_tab); 
+    printf("%d", result);
+    return;
 }
