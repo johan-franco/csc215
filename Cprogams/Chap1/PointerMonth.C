@@ -25,7 +25,18 @@ int year, yearday, *pmonth, *pday, *day_tab;
     *pday = yearday;
 }
 
+checkyear(year, day_tab) 
+int year, *day_tab;
+{
+    if(year % 4 == 0 && year% 100!= 0 || year%400 == 0) {
+        day_tab[2] = 29;
+    }
+}
+
 main() {
+    int month, day, result;
+    month = 3;
+    day = 1;
     int *day_tab[13];
     day_tab[0] = 0;
     day_tab[1] = 31;
@@ -40,10 +51,8 @@ main() {
     day_tab[10] = 31;
     day_tab[11] = 30;
     day_tab[12] = 31;
-    int month, day, result;
-    month = 1;
-    day = 1;
-    result = day_of_year(2000, month, day,day_tab); 
+
+    result = day_of_year(2024, month, day,day_tab); 
     printf("%d", result);
     return 1;
 }
