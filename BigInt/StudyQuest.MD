@@ -14,8 +14,21 @@ the program would the necessary changes occur?
 
 3. Suppose that the calculator is to be converted to use C++ double values
 rather than integers. Where would changes need to be made?
+We would need to make it so that the values taken in by scan are double values and not integers. Though doing this does could cause rounding errors.
 
 4. Most modern systems support graphical displays and mouse (or other
 pointer) input. Rewrite the Calculator program to take advantage of
 these features to produce an on-screen push-button calculator (this is a
 large programming project).
+
+There are a lot of libraries in C++ that can be used. However, I don't believe it is currently possible to change our version of Calculator to graphical output.
+
+5. Show how a new command, "C", which acts like the "Clear" command on
+a calculator could be implemented. The clear command sets the current
+value to zero.
+If we wanted to do that we would add another case value and have it set accumulator to 0.
+
+
+6. (AB only) How could the calculator be modified to allow the use of
+parentheses to control the order of operations?
+I think to modify our program to do that we would need to hold the values of all of them and then write a function to activate when a "(" is detected that executes the proper order of operations until a ")" is detected.

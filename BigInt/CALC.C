@@ -27,6 +27,10 @@ int main()
                 break;
             default:
                 printf("Error with operator\n");
+
+            case 'c':
+                accumulator = 0;
+                break;
        }
        printf("--> %d\n", accumulator);
        op = get_operator();
