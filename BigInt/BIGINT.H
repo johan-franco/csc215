@@ -1,4 +1,4 @@
-struct Bigint {
+struct bigint {
     char negative;
     char numdigits;
     char* digits;
@@ -19,6 +19,18 @@ struct bigint *num;
         num->digits[i] = numstr[last_pos-i];
         /* printf("numstr[%d] is %c\n", last_pos-i, numstr[last_pos-i]); */
     }
+}
+
+char convStr() {
+
+}
+
+void Subtract(vic, subtractor)
+struct bigint *vic;
+struct bigint *subtractor;
+{
+/*do we have this function return a bigint struct or should it be a string? or should it directly modify the values*/
+/*subtraction can at most decrease the most siginifcant bit by one place and addition can only increase the most significant bit py one place*/
 }
 
 char* get_bigint(num)
