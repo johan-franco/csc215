@@ -17,10 +17,12 @@
     - GetDigit: Access a specific digit.
     - ChangeDigit: Modify a digit.
     - AddSigDigit: Append a most significant digit.
+- Big Int Class:
+    - Constructors (initalizes from int or str)
+    - Has both arithmetic and comparison operators
+    - conversion functions (to change from class to int or double)
 
 
+- Errors can arise from overflow during arithmetic & invalid input
 
 
-
-
-]
