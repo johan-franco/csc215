@@ -7,6 +7,17 @@
     -    be useful in a wide variety of applications;
     - mimic operations on C++ integers so that a program written and debugged using int values can be quickly and reliably converted to use BigInt values; and
     - utilize information hiding; it should be possible to use BigInt variables without knowledge of the underlying data structures or algorithms used
+- Store digits as a sequence, using:
+    - Arrays or vectors for arbitrary size.
+    - Sign flag to handle positive/negative numbers.
+- Logical indexing:
+    - Least Significant Digit (LSD) is at index 0.
+    - Most Significant Digit (MSD) has the highest index.
+- Use helper functions for digit manipulation:
+    - GetDigit: Access a specific digit.
+    - ChangeDigit: Modify a digit.
+    - AddSigDigit: Append a most significant digit.
+
 
 
 
