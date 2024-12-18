@@ -22,7 +22,7 @@
     - Has both arithmetic and comparison operators
     - conversion functions (to change from class to int or double)
 
-
+- Flag for whether number is negative or not
 - Errors can arise from overflow during arithmetic & invalid input
 
-
+- "char vector to store individual digits, and digits will be stored as shown in the second of the diagrams above, i.e., with the least significant digit stored in the first array element"
