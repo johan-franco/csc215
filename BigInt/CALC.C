@@ -2,10 +2,12 @@
 #define BAD_OP  '\0'
 #define MAX_DIGITS 100
 
-/*
-This program implements a three function calculator as the first step to a
-test program for bignum struct.
-*/
+struct bigint {
+    char negative;              
+    char numdigits;              
+    char digits[MAX_DIGITS];     /* Array to hold the digits */
+};
+
 int main()
 {
     struct bigint accumulator;
@@ -33,7 +35,7 @@ int main()
                 Subtract(&accumulator, &input, &result);
                 break;
             case '*':
-                printf("not working")
+                printf("not working");
                 break;
             default:
                 printf("Error with operator\n");
@@ -42,7 +44,7 @@ int main()
                 set_bigint("0", &result);
                 break;
        }
-       accumulator = result;
+
        printf("--> %s\n", get_bigint(&accumulator, buffer));
 
        op = get_operator();
@@ -69,11 +71,6 @@ char get_operator() {
     return op;
 }
 
-struct bigint {
-    char negative;              
-    char numdigits;              
-    char digits[MAX_DIGITS];     /* Array to hold the digits */
-};
 
 
 /* Custom strlen function */
