@@ -1,41 +1,112 @@
 #include <stdio.h>
+#define MAX_DIGITS 100
+
 struct bigint {
-    char negative;
-    char numdigits;
-    char* digits;
+    char negative;               /* Flag for neg */
+    char numdigits;              
+    char digits[MAX_DIGITS];     /* Array to hold the digits */
 };
 
+void set_bigint();
+char* get_bigint();
+int my_strlen();
+
 int main() {
-    struct bigint num1, num2;
+    struct bigint bint1;
+    struct bigint bint2;
+    struct bigint bint3;
+    char buffer[2 * MAX_DIGITS + 2]; /* Buffer for the string rep of bigint */
 
-    set_bigint("12345", &num1);
-    set_bigint("678", &num2);
+    set_bigint("1234567", &bint1);
+    printf("bint1 is: %s\n", get_bigint(&bint1, buffer));
 
-    printf("num1: %s\n", get_bigint(&num1));
-    printf("num2: %s\n", get_bigint(&num2));
+    set_bigint("321", &bint2);
+    printf("bint2 is: %s\n", get_bigint(&bint2, buffer));
 
-    Subtract(&num1, &num2);
-    
-    printf("Result of subtraction: %s\n", get_bigint(&num1));
+    set_bigint("-17", &bint3);
+    printf("bint3 is: %s\n", get_bigint(&bint3, buffer));
 
     return 0;
 }
 
+/* Custom strlen function (string.h not found) */
+int my_strlen(s)
+char *s;
+{
+    int len;
+    len = 0;
+    while (s[len] != '\0') {
+        len = len + 1;
+    }
+    return len;
+}
+
+/* Function to set the value of a bigint from a string */
 void set_bigint(numstr, num)
 char *numstr;
 struct bigint *num;
 {
-    char last_pos, i;
-    num->negative = (numstr[0] == '-');
-    num->numdigits = strlen(numstr) - num->negative;
-    num->digits = alloc(num->numdigits);
-    last_pos = num->numdigits + (num->negative ? 0 : -1);
+    int i;
+    int last_pos;
+    int length;
 
-    /*Least significant is held at [0]*/
-    for (i = 0; i < num->numdigits; i++) {
-        num->digits[i] = numstr[last_pos-i];
-        /* printf("numstr[%d] is %c\n", last_pos-i, numstr[last_pos-i]); */
+    /* Determine if num is negative */
+    if (numstr[0] == '-') {
+        num->negative = 1;
+    } else {
+        num->negative = 0;
     }
+
+    /* Calc number of digits */
+    length = my_strlen(numstr);
+    if (num->negative) {
+        num->numdigits = length - 1;
+    } else {
+        num->numdigits = length;
+    }
+
+    /* Set the last position in the input string */
+    last_pos = length - 1;    
+    /* Reverse the digits into the digits array */
+    i = 0;
+    while (i < num->numdigits) {
+        num->digits[i] = numstr[last_pos - i];
+        i = i + 1;
+    }
+
+    /* Fill remaining digits with '0'*/
+    while (i < MAX_DIGITS) {
+        num->digits[i] = '0';
+        i = i + 1;
+    }
+}
+
+char* get_bigint(num, buffer)
+struct bigint *num;
+char *buffer;
+{
+    int i;
+    int start_pos;
+
+    /* Determine starting position based on negativity */
+    if (num->negative) {
+        buffer[0] = '-';
+        start_pos = 1;
+    } else {
+        start_pos = 0;
+    }
+
+    /* make num into string*/
+    i = 0;
+    while (i < num->numdigits) {
+        buffer[i + start_pos] = num->digits[num->numdigits - 1 - i];
+        i = i + 1;
+    }
+
+    /* Null-terminator*/
+    buffer[num->numdigits + start_pos] = '\0';
+
+    return buffer;
 }
 
 
@@ -64,7 +135,7 @@ struct bigint *subtractor;
             result += 10;  
             borrow = 1;   
         } else {
-            borrow = 0;    
+            borrow = 0;
         }
         
         vic->digits[i] = result + '0';  
@@ -80,19 +151,7 @@ struct bigint *subtractor;
 }
 
 
-char* get_bigint(num)
-struct bigint *num;
-{
-   char *numstr;
-   char start_pos, i;
-   numstr = alloc(num->numdigits + (num->negative ? 2 : 1));
-   start_pos = num->negative;
-   if (start_pos == 1) numstr[0] = '-';
-   for (i = 0; i < num->numdigits; i++) {
-       numstr[i+start_pos] = num->digits[num->numdigits-(i+1)];
-       /* printf("numstr[%d] is %c\n", i, numstr[i+start_pos]); */
-   }
-   numstr[num->numdigits+start_pos] = '\0';
-   return numstr;
-}
+
+
+
 
