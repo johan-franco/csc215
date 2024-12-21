@@ -2,7 +2,7 @@
 #define MAX_DIGITS 100
 
 struct bigint {
-    char negative;               /* Flag for neg */
+    char negative;              
     char numdigits;              
     char digits[MAX_DIGITS];     /* Array to hold the digits */
 };
