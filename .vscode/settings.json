@@ -9,6 +9,7 @@
         "BACKWARD.C": "cpp",
         "PointerMonth.C": "cpp",
         "CALC.C": "cpp",
-        "e": "cpp"
+        "e": "cpp",
+        "BIGINT.C": "cpp"
     }
 }
