@@ -8,6 +8,7 @@
         "testchr.C": "cpp",
         "BACKWARD.C": "cpp",
         "PointerMonth.C": "cpp",
-        "CALC.C": "cpp"
+        "CALC.C": "cpp",
+        "e": "cpp"
     }
 }
