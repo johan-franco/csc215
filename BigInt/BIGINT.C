@@ -13,10 +13,10 @@ int main() {
     struct bigint result;
     char buffer[3 * MAX_DIGITS]; /* Buffer for string representation  */
 
-    set_bigint("1234567", &bint1);
+    set_bigint("999999", &bint1);
     printf("bint1 is: %s\n", get_bigint(&bint1, buffer));
 
-    set_bigint("321", &bint2);
+    set_bigint("10000", &bint2);
     printf("bint2 is: %s\n", get_bigint(&bint2, buffer));
 
    
