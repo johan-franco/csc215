@@ -7,29 +7,8 @@ struct bigint {
     char digits[MAX_DIGITS];     /* Array to hold the digits */
 };
 
-void set_bigint();
-char* get_bigint();
-int my_strlen();
 
-int main() {
-    struct bigint bint1;
-    struct bigint bint2;
-    struct bigint bint3;
-    char buffer[2 * MAX_DIGITS + 2]; /* Buffer for the string rep of bigint */
-
-    set_bigint("1234567", &bint1);
-    printf("bint1 is: %s\n", get_bigint(&bint1, buffer));
-
-    set_bigint("321", &bint2);
-    printf("bint2 is: %s\n", get_bigint(&bint2, buffer));
-
-    set_bigint("-17", &bint3);
-    printf("bint3 is: %s\n", get_bigint(&bint3, buffer));
-
-    return 0;
-}
-
-/* Custom strlen function (string.h not found) */
+/* Custom strlen function */
 int my_strlen(s)
 char *s;
 {
@@ -50,37 +29,31 @@ struct bigint *num;
     int last_pos;
     int length;
 
-    /* Determine if num is negative */
+    num->negative = 0;
     if (numstr[0] == '-') {
         num->negative = 1;
-    } else {
-        num->negative = 0;
     }
 
-    /* Calc number of digits */
     length = my_strlen(numstr);
+    num->numdigits = length;
     if (num->negative) {
         num->numdigits = length - 1;
-    } else {
-        num->numdigits = length;
     }
 
-    /* Set the last position in the input string */
-    last_pos = length - 1;    
-    /* Reverse the digits into the digits array */
+    last_pos = length - 1;
     i = 0;
     while (i < num->numdigits) {
         num->digits[i] = numstr[last_pos - i];
         i = i + 1;
     }
 
-    /* Fill remaining digits with '0'*/
     while (i < MAX_DIGITS) {
         num->digits[i] = '0';
         i = i + 1;
     }
 }
 
+/* Function to get the string representation of a bigint */
 char* get_bigint(num, buffer)
 struct bigint *num;
 char *buffer;
@@ -88,70 +61,120 @@ char *buffer;
     int i;
     int start_pos;
 
-    /* Determine starting position based on negativity */
+    start_pos = 0;
     if (num->negative) {
         buffer[0] = '-';
         start_pos = 1;
-    } else {
-        start_pos = 0;
     }
 
-    /* make num into string*/
     i = 0;
     while (i < num->numdigits) {
         buffer[i + start_pos] = num->digits[num->numdigits - 1 - i];
         i = i + 1;
     }
 
-    /* Null-terminator*/
     buffer[num->numdigits + start_pos] = '\0';
 
     return buffer;
 }
 
-
-void Subtract(vic, subtractor)
-struct bigint *vic;
-struct bigint *subtractor;
+/* Addition function */
+void Add(a, b, result)
+struct bigint *a;
+struct bigint *b;
+struct bigint *result;
 {
+    int carry;
+    int sum;
     int i;
-    int borrow;
-    borrow = 0;
+    int digit_a;
+    int digit_b;
     int max_digits;
-    int vic_digit;
-    int sub_dig;
-    max_digits = vic->numdigits > subtractor->numdigits ? vic->numdigits : subtractor->numdigits;
 
-    vic->digits = realloc(vic->digits, max_digits + 1);
+    carry = 0;
+    max_digits = a->numdigits;
+    if (b->numdigits > max_digits) {
+        max_digits = b->numdigits;
+    }
 
-    for (i = 0; i < max_digits; i++) {
-        vic_digit = (i < vic->numdigits) ? vic->digits[i] - '0' : 0;
-        sub_dig = (i < subtractor->numdigits) ? subtractor->digits[i] - '0' : 0;
-        
-        int result;
-        result = vic_digit - sub_dig - borrow;
-
-        if (result < 0) {
-            result += 10;  
-            borrow = 1;   
-        } else {
-            borrow = 0;
+    i = 0;
+    while (i < max_digits || carry) {
+        digit_a = 0;
+        /*Subtracting b '0' helps convert char to actual value as its ascii is 48*/
+        if (i < a->numdigits) {
+            digit_a = a->digits[i] - '0';
         }
-        
-        vic->digits[i] = result + '0';  
-    }
-    while (vic->numdigits > 1 && vic->digits[vic->numdigits - 1] == '0') {
-        vic->numdigits--;
-    }
 
-    if (vic->numdigits == 0) {
-        vic->numdigits = 1;
-        vic->digits[0] = '0';  
+        digit_b = 0;
+        if (i < b->numdigits) {
+            digit_b = b->digits[i] - '0';
+        }
+
+        sum = digit_a + digit_b + carry;
+        carry = sum / 10;
+        result->digits[i] = (sum % 10) + '0';
+        /*Add '0' to reconvert to str*/
+        i = i + 1;
+    }
+/*Removing zeros and acutally placing values into result bigint*/
+
+    result->numdigits = i;
+    result->negative = 0;
+
+    while (result->numdigits > 1 && result->digits[result->numdigits - 1] == '0') {
+        result->numdigits = result->numdigits - 1;
     }
 }
 
+/* very similar to addition except with borrow instead of carry */
+void Subtract(a, b, result)
+struct bigint *a;
+struct bigint *b;
+struct bigint *result;
+{
+    int borrow;
+    int diff;
+    int i;
+    int digit_a;
+    int digit_b;
+    int max_digits;
 
+    borrow = 0;
+    max_digits = a->numdigits;
+    if (b->numdigits > max_digits) {
+        max_digits = b->numdigits;
+    }
 
+    i = 0;
+    while (i < max_digits) {
+        digit_a = 0;
+        if (i < a->numdigits) {
+            digit_a = a->digits[i] - '0';
+        }
 
+        digit_b = 0;
+        if (i < b->numdigits) {
+            digit_b = b->digits[i] - '0';
+        }
 
+        diff = digit_a - digit_b - borrow;
+        if (diff < 0) {
+            diff = diff + 10;
+            borrow = 1;
+        } else {
+            borrow = 0;
+        }
 
+        result->digits[i] = diff + '0';
+
+        i = i + 1;
+    }
+
+/*Removing zeros and acutally placing values into result bigint*/
+    result->numdigits = max_digits;
+    result->negative = 0;
+
+    while (result->numdigits > 1 && result->digits[result->numdigits - 1] == '0') {
+        result->numdigits = result->numdigits - 1;
+    }
+}
