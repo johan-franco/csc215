@@ -32,7 +32,7 @@ int main()
                 Add(&accumulator,&input, &result);
                 break;
             case '-':
-                Subtract(&accumulator, &input, &result);
+                Subtract(&accumulator, &input, &accumulator);
                 break;
             case '*':
                 printf("not working");
@@ -45,8 +45,8 @@ int main()
                 break;
        }
 
-       printf("--> %s\n", get_bigint(&accumulator, buffer));
-
+       printf("--> %s\n", get_bigint(&result, buffer));
+       copy_bigint(&accumulator, &result);
        op = get_operator();
     }
 }
@@ -241,5 +241,16 @@ struct bigint *result;
 
     while (result->numdigits > 1 && result->digits[result->numdigits - 1] == '0') {
         result->numdigits = result->numdigits - 1;
+    }
+}
+void copy_bigint(source, destination)
+struct bigint *source;
+struct bigint *destination;
+{
+    int i;
+    destination->negative = source->negative;
+    destination->numdigits = source->numdigits;
+    for (i = 0; i < MAX_DIGITS; i++) {
+        destination->digits[i] = source->digits[i];
     }
 }
