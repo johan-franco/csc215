@@ -9,6 +9,6 @@ main() {
         set_bigint("1234567", &bi);
         ASSERT_STR(get_bigint(bi), "1234567");
     }
-
+/*Weirdly enough output states 1 Test and that it wasn't passed or failed*/
     END_TESTING();
 }
