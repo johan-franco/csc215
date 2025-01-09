@@ -10,6 +10,7 @@
         "PointerMonth.C": "cpp",
         "CALC.C": "cpp",
         "e": "cpp",
-        "BIGINT.C": "cpp"
+        "BIGINT.C": "cpp",
+        "BIGINTTD.C": "cpp"
     }
 }
