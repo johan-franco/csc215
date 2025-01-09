@@ -1,4 +1,3 @@
-#include <stdio.h>
 #define MAX_DIGITS 100
 
 struct bigint {
