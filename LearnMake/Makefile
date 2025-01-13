@@ -8,4 +8,4 @@ file2:
 	touch file2
 
 clean:
-	rm -f file1 file2 some_file
+	rm -f $(files) some_file
