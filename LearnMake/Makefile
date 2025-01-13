@@ -1,10 +1,11 @@
-some_file: other_file
-	echo "This will always run, and runs second"
+files := file1 file2 #variables need to use var:= x y z and $(var) 
+some_file: $(files) #some_file depends on the variable, which is connected to two files
+	echo "Look at this variable: " $(files) 
 	touch some_file
-
-other_file:
-	echo "This will always run, and runs first"
+file1:
+	touch file1
+file2:
+	touch file2
 
 clean:
-	rm -f some_file
-	echo "cleaned"
+	rm -f file1 file2 some_file
