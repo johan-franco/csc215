@@ -1,0 +1,11 @@
+files := file1 file2 #variables need to use var:= x y z and $(var) 
+some_file: $(files) #some_file depends on the variable, which is connected to two files
+	echo "Look at this variable: " $(files) 
+	touch some_file
+file1:
+	touch file1
+file2:
+	touch file2
+
+clean:
+	rm -f $(files) some_file

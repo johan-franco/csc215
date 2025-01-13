@@ -1,11 +1,12 @@
-files := file1 file2 #variables need to use var:= x y z and $(var) 
-some_file: $(files) #some_file depends on the variable, which is connected to two files
-	echo "Look at this variable: " $(files) 
-	touch some_file
-file1:
-	touch file1
-file2:
-	touch file2
+all: one two three
+# can call multiple at once through having one depending on multiple
+
+one:
+	touch one
+two:
+	touch two
+three:
+	touch three
 
 clean:
-	rm -f $(files) some_file
+	rm -f one two three
