@@ -1,8 +1,6 @@
-blah: blah.o
-	cc blah.o -o blah # Runs third
+some_file: other_file
+	echo "This will always run, and runs second"
+	touch some_file
 
-blah.o: blah.c
-	cc -c blah.c -o blah.o # Runs second
-
-blah.c:
-	echo "int main() { return 1; }" > blah.c # Runs first
+other_file:
+	echo "This will always run, and runs first"
