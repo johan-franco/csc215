@@ -8,3 +8,5 @@ other_file:
 clean:
 	rm -f some_file
 	echo "cleaned"
+
+#can create a file and also remove it 
