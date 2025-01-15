@@ -1,23 +1,16 @@
-hey: one two
-	# Outputs "hey", since this is the target name
-	echo $@
+objects = foo.o bar.o all.o
+all: $(objects)
+	$(CC) $^ -o all
 
-	# Outputs all prerequisites newer than the target
-	echo $?
+# Syntax - targets ...: target-pattern: prereq-patterns ...
+$(objects): %.o: %.c
+	$(CC) -c $^ -o $@
 
-	# Outputs all prerequisites
-	echo $^
+all.c:
+	echo "int main() { return 0; }" > all.c
 
-	# Outputs the first prerequisite
-	echo $<
-
-	touch hey
-
-one:
-	touch one
-
-two:
-	touch two
+%.c:
+	touch $@
 
 clean:
-	rm -f hey one two
+	rm -f *.c *.o all
