@@ -17,4 +17,6 @@ class BigInt
     string to_string() const;
 
     bool operator==(const BigInt&) const;
+    bool operator>(const BigInt& i2) const;
+
 };

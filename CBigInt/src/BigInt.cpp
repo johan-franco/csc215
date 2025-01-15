@@ -40,3 +40,20 @@ bool BigInt::operator==(const BigInt& i2) const
         return false;
 }
 
+bool BigInt::operator>(const BigInt& i2) const
+{
+    BigInt b1 = BigInt(digits, negative);
+    if (stoi(b1.to_string()) > stoi(i2.to_string()))
+        return true;
+    else
+        return false;
+}
+
+bool BigInt::operator<(const BigInt& i2) const
+{
+    BigInt b1 = BigInt(digits, negative);
+    if (stoi(b1.to_string()) < stoi(i2.to_string()))
+        return true;
+    else
+        return false;
+}
