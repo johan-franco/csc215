@@ -1,9 +1,9 @@
 #include <string>
 using namespace std;
 
-class BigInt
+class BigInt 
 {
-    bool negative;
+    bool flag;
     string digits;
 
     public:
@@ -11,19 +11,19 @@ class BigInt
     BigInt();
     BigInt(int);
     BigInt(string);
-    BigInt(string, bool);
+    BigInt(string n, bool b);
+
+
+    // helper functions
+    BigInt sum_common_digits(const BigInt&) const;
 
     // member functions
     string to_string() const;
-
     bool operator==(const BigInt&) const;
-    bool operator!=(const BigInt& i2) const;
-    bool operator>(const BigInt& i2) const;
-    bool operator<(const BigInt& i2) const;
-    bool operator<=(const BigInt& i2) const;
-    bool operator>=(const BigInt& i2) const;
-
-    BigInt operator+(const BigInt& i2) const;
-
-
+    bool operator>(const BigInt&) const;
+    bool operator!=(const BigInt&) const;
+    bool operator<=(const BigInt&) const;
+    bool operator<(const BigInt&) const;
+    bool operator>=(const BigInt&) const;
+    BigInt operator+(const BigInt&) const;
 };
