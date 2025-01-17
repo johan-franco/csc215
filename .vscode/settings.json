@@ -12,6 +12,7 @@
         "e": "cpp",
         "BIGINT.C": "cpp",
         "BIGINTTD.C": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "string": "cpp"
     }
 }
