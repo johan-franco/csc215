@@ -98,10 +98,93 @@ bool BigInt::operator>=(const BigInt& i2) const
     return BigInt(sum);
 }*/
 
-BigInt BigInt::operator+(const BigInt& i2) const
+BigInt BigInt::operator+(const BigInt& b2) const
 {
-    BigInt i1(digits, flag);
+    BigInt b1(digits, flag);
     BigInt sum;
+    string s;
+    int i1;
+    int i2;
+    
 
+    int carry = 0;
+    int max_digits = b1.digits.length();
+    if (b2.digits.length() > max_digits) {
+        max_digits = b2.digits.length();
+    }
+    for(int i; i < max_digits || carry; i++) {
+        i1 = 0;
+        /*Subtracting b '0' helps convert char to actual value as its ascii is 48*/
+        if (i < b1.digits.length()) {
+            i1 = b1.digits[i] - '0';
+        }
+
+        i2 = 0;
+        if (i < b2.digits.length()) {
+            i2 = b2.digits[i] - '0';
+        }
+
+        result = i1 + i2 + carry;
+        carry = result / 10;
+        result->digits[i] = (sum % 10) + '0';
+        /*Add '0' to reconvert to str*/
+        i = i + 1;
+    }
+/*Removing zeros and acutally placing values into result bigint*/
+
+    result->numdigits = i;
+    result->negative = 0;
+
+    while (result->numdigits > 1 && result->digits[result->numdigits - 1] == '0') {
+        result->numdigits = result->numdigits - 1;
+    }
+    
     return sum;
+}
+
+void Add(a, b, result)
+struct bigint *a;
+struct bigint *b;
+struct bigint *result;
+{
+    int carry;
+    int sum;
+    int i;
+    int digit_a;
+    int digit_b;
+    int max_digits;
+
+    carry = 0;
+    max_digits = a->numdigits;
+    if (b->numdigits > max_digits) {
+        max_digits = b->numdigits;
+    }
+
+    i = 0;
+    while (i < max_digits || carry) {
+        digit_a = 0;
+        /*Subtracting b '0' helps convert char to actual value as its ascii is 48*/
+        if (i < a->numdigits) {
+            digit_a = a->digits[i] - '0';
+        }
+
+        digit_b = 0;
+        if (i < b->numdigits) {
+            digit_b = b->digits[i] - '0';
+        }
+
+        sum = digit_a + digit_b + carry;
+        carry = sum / 10;
+        result->digits[i] = (sum % 10) + '0';
+        /*Add '0' to reconvert to str*/
+        i = i + 1;
+    }
+/*Removing zeros and acutally placing values into result bigint*/
+
+    result->numdigits = i;
+    result->negative = 0;
+
+    while (result->numdigits > 1 && result->digits[result->numdigits - 1] == '0') {
+        result->numdigits = result->numdigits - 1;
+    }
 }
