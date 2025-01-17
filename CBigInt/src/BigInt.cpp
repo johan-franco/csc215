@@ -71,8 +71,14 @@ bool BigInt::operator>=(const BigInt& i2) const {
 }
 bool BigInt::operator<=(const BigInt& i2) const {
     BigInt b1 = BigInt(digits, negative);
-    if (stoi(b1.to_string()) >= stoi(i2.to_string()))
-        return true;
-    else
-        return false;
+    return i2 >= b1;
+}
+
+BigInt BigInt::operator+(const BigInt& b2) const {
+    int i1, i2;
+    BigInt b1 = BigInt(digits, negative);
+    i1 = stoi(b1.to_string());
+    i2 = stoi(b2.to_string());
+    BigInt b3 = BigInt(i1 + i2);
+    return b3;
 }

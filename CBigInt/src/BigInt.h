@@ -23,6 +23,7 @@ class BigInt
     bool operator<=(const BigInt& i2) const;
     bool operator>=(const BigInt& i2) const;
 
+    BigInt operator+(const BigInt& i2) const;
 
 
 };
