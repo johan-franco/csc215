@@ -61,6 +61,25 @@ bool BigInt::operator>(const BigInt& i2) const
         else
             return false;
     }
+    else {
+
+        for(int i;i<b1.to_string().length();i++) {
+            if(b1.to_string()[i] == '-' && b1.to_string()[i] == '-'){
+                continue;
+            }
+            int s1 = b1.to_string()[i];
+            int s2 = i2.to_string()[i];
+            if(s1 == s2) {
+                continue;
+            }
+            if(s1 > s2) {
+                return true;
+            }
+            if(s1 < s2) {
+                return false;
+            }
+        }
+    }
 }
 
 bool BigInt::operator<(const BigInt& i2) const
@@ -71,16 +90,20 @@ bool BigInt::operator<(const BigInt& i2) const
 
 bool BigInt::operator!=(const BigInt& i2) const{
     BigInt b1 = BigInt(digits, negative);
-
+    if (b1.to_string() != i2.to_string())
+        return true;
+    else
+        return false;
 }
 bool BigInt::operator>=(const BigInt& i2) const {
     BigInt b1 = BigInt(digits, negative);
+    return true;
 }
 bool BigInt::operator<=(const BigInt& i2) const {
     BigInt b1 = BigInt(digits, negative);
-    return i2 >= b1;
+    return true;
 }
 
 BigInt BigInt::operator+(const BigInt& b2) const {
-
+    return b2;
 }

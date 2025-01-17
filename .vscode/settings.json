@@ -13,6 +13,7 @@
         "BIGINT.C": "cpp",
         "BIGINTTD.C": "cpp",
         "iosfwd": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "sstream": "cpp"
     }
 }
