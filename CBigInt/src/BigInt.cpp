@@ -107,8 +107,10 @@ BigInt BigInt::operator+(const BigInt& b2) const
 
     int carry = 0;
     int max_digits = b1.digits.length();
+    int start = max_digits - b2.digits.length();
     if (b2.digits.length() > max_digits) {
         max_digits = b2.digits.length();
+        start = max_digits - b1.digits.length();
     }
     string s(max_digits+1,  ' ');
     for(int i; i < max_digits || carry; i++) {
