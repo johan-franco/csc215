@@ -107,27 +107,29 @@ BigInt BigInt::operator+(const BigInt& b2) const
 
     int carry = 0;
     int max_digits = b1.digits.length();
+    int low_digits = b2.digits.length();
     int start = max_digits - b2.digits.length();
     if (b2.digits.length() > max_digits) {
         max_digits = b2.digits.length();
+        low_digits = b1.digits.length();
         start = max_digits - b1.digits.length();
     }
     string s(max_digits+1,  ' ');
-    for(int i= max_digits -1; i > max_digits || carry; i--) {
+    for(int i=1; i < max_digits || carry; i++) {
         i1 = 0;
         /*Subtracting b '0' helps convert char to actual value as its ascii is 48*/
-        if (i > b1.digits.length()) {
-            i1 = b1.digits[i] - '0';
+        if (i > low_digits) {
+            i1 = b1.digits[-i] - '0';
         }
 
         i2 = 0;
-        if (i > b2.digits.length()) {
-            i2 = b2.digits[i] - '0';
+        if (i > low_digits) {
+            i2 = b2.digits[-i] - '0';
         }
 
         int result = i1 + i2 + carry;
         carry = result / 10;
-        s[i+1] = (result % 10) + '0';
+        s[-i] = (result % 10) + '0';
         /*Add '0' to reconvert to str*/
     }
     BigInt sum(s);
