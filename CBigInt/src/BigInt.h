@@ -21,7 +21,6 @@ class BigInt
 
     // member functions
     string to_string() const;
-    void reverse_dig() const;
     bool operator==(const BigInt&) const;
     bool operator>(const BigInt&) const;
     bool operator!=(const BigInt&) const;

@@ -10,7 +10,6 @@ TEST_CASE("Test can create and render BigInts") {
     BigInt bi2(42);
     CHECK(bi2.to_string() == "42");
     BigInt bi3(-42);
-    bi3.reverse_dig();
     CHECK(bi3.to_string() == "-42");
     BigInt bi4("123456789012345678901234567890");
     CHECK(bi4.to_string() == "123456789012345678901234567890");
@@ -67,6 +66,6 @@ TEST_CASE("Test can add BigInts") {
     BigInt i3("43210");
     BigInt i4("9999");
     BigInt i5("1");
-    CHECK((i1 + i2).to_string() == "444"); //values: CHECK(  44  == 444 )
-    CHECK((i1 + i3).to_string() == "43333"); //values: CHECK(  5510  == 43333 )
+    CHECK((i1 + i2).to_string() == "444"); //values: CHECK(  044 == 444 )
+    CHECK((i1 + i3).to_string() == "43333"); //values: CHECK(  04333 == 43333 )
 }
