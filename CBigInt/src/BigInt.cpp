@@ -20,6 +20,7 @@ BigInt::BigInt(string n)
 {
     flag = (n.front() == '-') ? true: false;
     digits = (n.front() == '-') ? n.substr(1, n.size() - 1) : n;  
+
 }
 
 string BigInt::to_string() const
@@ -113,7 +114,7 @@ BigInt BigInt::operator+(const BigInt& b2) const
         start = max_digits - b1.digits.length();
     }
     string s(max_digits+1,  ' ');
-    for(int i; i < max_digits+1 || carry; i++) {
+    for(int i=0; i < max_digits || carry; i++) {
         i1 = 0;
         /*Subtracting b '0' helps convert char to actual value as its ascii is 48*/
         if (i < b1.digits.length()) {
@@ -127,7 +128,7 @@ BigInt BigInt::operator+(const BigInt& b2) const
         
         int result = i1 + i2 + carry;
         carry = result / 10;
-        s[max_digits+1-i] = (result % 10) + '0';
+        s[max_digits-i] = (result % 10) + '0';
         /*Add '0' to reconvert to str*/
     }
     BigInt sum(s);
