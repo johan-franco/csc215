@@ -110,7 +110,7 @@ BigInt BigInt::operator+(const BigInt& b2) const
     if (b2.digits.length() > max_digits) {
         max_digits = b2.digits.length();
     }
-    string s[max_digits+1];
+    string s(max_digits+1,  ' ');
     for(int i; i < max_digits || carry; i++) {
         i1 = 0;
         /*Subtracting b '0' helps convert char to actual value as its ascii is 48*/
