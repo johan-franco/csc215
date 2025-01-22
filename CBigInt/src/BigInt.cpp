@@ -113,7 +113,7 @@ BigInt BigInt::operator+(const BigInt& b2) const
         start = max_digits - b1.digits.length();
     }
     string s(max_digits+1,  ' ');
-    for(int i; i < max_digits || carry; i++) {
+    for(int i = 1; i < max_digits || carry; i++) {
         i1 = 0;
         /*Subtracting b '0' helps convert char to actual value as its ascii is 48*/
         if (i < b1.digits.length()) {
