@@ -14,25 +14,17 @@ BigInt::BigInt(int i)
 {
     flag = (i >= 0) ? false : true;
     digits = (i >= 0) ? std::to_string(i) : std::to_string(-i);
-
 }
 
 BigInt::BigInt(string n)
 {
     flag = (n.front() == '-') ? true: false;
     digits = (n.front() == '-') ? n.substr(1, n.size() - 1) : n;  
-
 }
 
 string BigInt::to_string() const
 {
     return (!flag) ? digits : "-" + digits;
-}
-
-void BigInt::reverse_dig() const
-{
-    reverse(digits.begin(), digits.end());
-    return;
 }
 
 BigInt::BigInt(string n, bool b)
@@ -121,8 +113,6 @@ BigInt BigInt::operator+(const BigInt& b2) const
         start = max_digits - b1.digits.length();
     }
     string s(max_digits+1,  ' ');
-    b1.reverse_dig();
-    b2.reverse_dig();
     for(int i; i < max_digits || carry; i++) {
         i1 = 0;
         /*Subtracting b '0' helps convert char to actual value as its ascii is 48*/
