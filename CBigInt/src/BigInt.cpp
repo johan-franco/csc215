@@ -8,23 +8,42 @@ BigInt::BigInt()
 {
     flag = false;
     digits = "0";
+    reversed = "0";
 }
 
 BigInt::BigInt(int i)
 {
     flag = (i >= 0) ? false : true;
     digits = (i >= 0) ? std::to_string(i) : std::to_string(-i);
+    reversed = (digits.length(), ' ');
+    int count = digits.length();
+    for (int i;i < digits.length();i++) {
+        reversed[i] = digits[count];
+        count--;
+    } 
+
 }
 
 BigInt::BigInt(string n)
 {
     flag = (n.front() == '-') ? true: false;
     digits = (n.front() == '-') ? n.substr(1, n.size() - 1) : n;  
+    reversed = (digits.length(), ' ');
+    int count = digits.length();
+    for (int i;i < digits.length();i++) {
+        reversed[i] = digits[count];
+        count--;
+    } 
 }
 
 string BigInt::to_string() const
 {
     return (!flag) ? digits : "-" + digits;
+}
+
+string BigInt::rev_string() const
+{
+    return (!flag) ? reversed : "-" + reversed;
 }
 
 BigInt::BigInt(string n, bool b)
@@ -113,21 +132,21 @@ BigInt BigInt::operator+(const BigInt& b2) const
         start = max_digits - b1.digits.length();
     }
     string s(max_digits+1,  ' ');
-    for(int i = 1; i < max_digits || carry; i++) {
+    for(int i; i < max_digits || carry; i++) {
         i1 = 0;
         /*Subtracting b '0' helps convert char to actual value as its ascii is 48*/
         if (i < b1.digits.length()) {
-            i1 = b1.digits[-i] - '0';
+            i1 = b1.reversed[i] - '0';
         }
 
         i2 = 0;
         if (i < b2.digits.length()) {
-            i2 = b2.digits[-i] - '0';
+            i2 = b2.reversed[i] - '0';
         }
 
         int result = i1 + i2 + carry;
         carry = result / 10;
-        s[-i] = (result % 10) + '0';
+        s[i] = (result % 10) + '0';
         /*Add '0' to reconvert to str*/
     }
     BigInt sum(s);

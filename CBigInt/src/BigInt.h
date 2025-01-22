@@ -5,6 +5,7 @@ class BigInt
 {
     bool flag;
     string digits;
+    string reversed;
 
     public:
     // constructors
@@ -19,6 +20,7 @@ class BigInt
 
     // member functions
     string to_string() const;
+    string rev_string() const;
     bool operator==(const BigInt&) const;
     bool operator>(const BigInt&) const;
     bool operator!=(const BigInt&) const;
