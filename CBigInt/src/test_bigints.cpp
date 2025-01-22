@@ -66,6 +66,6 @@ TEST_CASE("Test can add BigInts") {
     BigInt i3("43210");
     BigInt i4("9999");
     BigInt i5("1");
-    CHECK((i1 + i2).to_string() == "444");
-    CHECK((i1 + i3).to_string() == "43333");
+    CHECK((i1 + i2).to_string() == "444"); //values: CHECK(  44  == 444 )
+    CHECK((i1 + i3).to_string() == "43333"); //values: CHECK(  5510  == 43333 )
 }
