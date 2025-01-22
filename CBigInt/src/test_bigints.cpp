@@ -61,8 +61,8 @@ TEST_CASE("Test can compare BigInts with !=, <=, <, and >=") {
 
 
 TEST_CASE("Test can add BigInts") {
-    BigInt i1("123");
-    BigInt i2("321");
+    BigInt i1("-123");
+    BigInt i2("-321");
     BigInt i3("43210");
     BigInt i4("9999");
     BigInt i5("1");

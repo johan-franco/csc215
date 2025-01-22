@@ -131,7 +131,7 @@ BigInt BigInt::operator+(const BigInt& b2) const
         s[max_digits-i] = (result % 10) + '0';
         /*Add '0' to reconvert to str*/
     }
-    BigInt sum(s);
+    BigInt sum(s, false);
     if(b1.flag == true && b2.flag == true) {
         BigInt sum(s, true);
     }
