@@ -107,23 +107,21 @@ BigInt BigInt::operator+(const BigInt& b2) const
 
     int carry = 0;
     int max_digits = b1.digits.length();
-    int low_digits = b2.digits.length();
     int start = max_digits - b2.digits.length();
     if (b2.digits.length() > max_digits) {
         max_digits = b2.digits.length();
-        low_digits = b1.digits.length();
         start = max_digits - b1.digits.length();
     }
     string s(max_digits+1,  ' ');
-    for(int i=1; i < max_digits || carry; i++) {
+    for(int i; i < max_digits || carry; i++) {
         i1 = 0;
         /*Subtracting b '0' helps convert char to actual value as its ascii is 48*/
-        if (i > low_digits) {
+        if (i < b1.digits.length()) {
             i1 = b1.digits[-i] - '0';
         }
 
         i2 = 0;
-        if (i > low_digits) {
+        if (i < b2.digits.length()) {
             i2 = b2.digits[-i] - '0';
         }
 
