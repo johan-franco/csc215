@@ -1,11 +1,12 @@
-#include <string>
+#include <algorithm> 
+#include<iostream>
+#include<string>
 using namespace std;
 
 class BigInt 
 {
     bool flag;
     string digits;
-    string reversed;
 
     public:
     // constructors
@@ -20,7 +21,7 @@ class BigInt
 
     // member functions
     string to_string() const;
-    string rev_string() const;
+    void reverse_dig() const;
     bool operator==(const BigInt&) const;
     bool operator>(const BigInt&) const;
     bool operator!=(const BigInt&) const;

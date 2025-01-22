@@ -10,6 +10,7 @@ TEST_CASE("Test can create and render BigInts") {
     BigInt bi2(42);
     CHECK(bi2.to_string() == "42");
     BigInt bi3(-42);
+    bi3.reverse_dig();
     CHECK(bi3.to_string() == "-42");
     BigInt bi4("123456789012345678901234567890");
     CHECK(bi4.to_string() == "123456789012345678901234567890");
