@@ -74,6 +74,7 @@ TEST_CASE("Test can add BigInts") {
     CHECK((i5 - i3).to_string() == "-43209");
     CHECK((i6 - i3).to_string() == "-43531");
     CHECK((i1 - i6).to_string() == "444");
+    CHECK((i1 *4).to_string() == "369");
 
 
     /*Succesful because I've been always accounting for a increase in the maximum number
@@ -99,6 +100,7 @@ TEST_CASE("Test subtraction of BigInts") {
 
     //testing negative number being subtracted
     CHECK((i5 - i6).to_string() == "-66666");
+    
 
     //testing double negative if first val is negative instead of positive
     CHECK((i7 - i8).to_string() == "41976");

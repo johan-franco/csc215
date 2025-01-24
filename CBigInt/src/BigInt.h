@@ -29,4 +29,9 @@ class BigInt
     bool operator>=(const BigInt&) const;
     BigInt operator+(const BigInt&) const;
     BigInt operator-(const BigInt&) const;
+    BigInt operator*(const BigInt&) const;
+    BigInt operator*(int x) const;
+
+
+
 };

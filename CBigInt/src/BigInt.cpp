@@ -241,3 +241,22 @@ BigInt BigInt::operator-(const BigInt& sub2) const {
         }
     }
 }
+BigInt BigInt::operator*(const BigInt& mult)const {
+    BigInt b1(digits, flag);
+    int max_digits = 100;
+    string s(max_digits, ' ');
+
+    return mult;
+
+}
+BigInt BigInt::operator*(int mult)const {
+    BigInt b1(digits, flag);
+    int max_digits = 100;
+    string s(max_digits, ' ');
+    BigInt temp(b1);
+
+    for(int i = 2; i < mult; i++) {
+        temp = (temp + b1);
+    }
+    return temp;
+}
