@@ -182,8 +182,7 @@ BigInt BigInt::operator+(const BigInt& b2) const
     }
 }
 BigInt BigInt::operator-(const BigInt& sub2) const {
-    /*We want to be able to handle if the possibility that sub2 is negative or positive,
-    because if it is negative then it will turn to addition otherwise we need to turn it positive +*/
+    /*Still need to handle that double - are appearing & other cases*/
     BigInt b1(digits, flag);
     int i1, i2, carry = 0;
     int max_digits = max(b1.digits.length(), sub2.digits.length());
@@ -194,8 +193,15 @@ BigInt BigInt::operator-(const BigInt& sub2) const {
         //Handles case where the reverse of sub2 makes it tbe same sign as b1 
         return b1 + BigInt(sub2.digits, !sub2.flag);
     }
-    else if {
-        
+    if (sub2.flag == true){
+        //handles double negative
+        string s = (b1 + BigInt(sub2.digits, false)).to_string();
+        size_t not_zero = s.find_first_not_of('0');
+        // Cut the string to remove the leading zeros
+        if (not_zero != string::npos) {
+            s = s.substr(not_zero);
+        }
+        return BigInt(s,(b1 + BigInt(sub2.digits, !sub2.flag)).flag);
     }
     else {
         BigInt positive = b1;
