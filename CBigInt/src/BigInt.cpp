@@ -102,38 +102,61 @@ bool BigInt::operator>=(const BigInt& i2) const
 BigInt BigInt::operator+(const BigInt& b2) const
 {
     BigInt b1(digits, flag);
-    int i1;
-    int i2;
-    
+    int i1, i2, carry = 0;
+    int max_digits = max(b1.digits.length(), b2.digits.length());
+    string s(max_digits + 1, ' ');  // one extra space for carry
 
-    int carry = 0;
-    int max_digits = b1.digits.length();
-    int start = max_digits - b2.digits.length();
-    if (b2.digits.length() > max_digits) {
-        max_digits = b2.digits.length();
-        start = max_digits - b1.digits.length();
-    }
-    string s(max_digits+1,  ' ');
-    for(int i=0; i < max_digits || carry; i++) {
-        i1 = 0;
-        /*Subtracting b '0' helps convert char to actual value as its ascii is 48*/
-        if (i < b1.digits.length()) {
-            i1 = b1.digits[b1.digits.length()-1-i] - '0';
-        }
+    // Case 1: Both are positive
+    if (!b1.flag && !b2.flag) {
+        for (int i = 0; i < max_digits || carry; i++) {
+            i1 = (i < b1.digits.size()) ? (b1.digits[b1.digits.size() - 1 - i] - '0') : 0;
+            i2 = (i < b2.digits.size()) ? (b2.digits[b2.digits.size() - 1 - i] - '0') : 0;
 
-        i2 = 0;
-        if (i < b2.digits.length()) {
-            i2 = b2.digits[b2.digits.length()-1-i] - '0';
+            int result = i1 + i2 + carry;
+            carry = result / 10;
+            s[max_digits - i] = (result % 10) + '0';
         }
-        
-        int result = i1 + i2 + carry;
-        carry = result / 10;
-        s[max_digits-i] = (result % 10) + '0';
-        /*Add '0' to reconvert to str*/
+        return BigInt(s, false);
+
     }
-    BigInt sum(s, false);
-    if(b1.flag == true && b2.flag == true) {
-        BigInt sum(s, true);
+    // Case 2: Both BigInts are negative
+    else if (b1.flag && b2.flag) {
+        for (int i = 0; i < max_digits || carry; i++) {
+            i1 = (i < b1.digits.size()) ? (b1.digits[b1.digits.size() - 1 - i] - '0') : 0;
+            i2 = (i < b2.digits.size()) ? (b2.digits[b2.digits.size() - 1 - i] - '0') : 0;
+
+            int result = i1 + i2 + carry;
+            carry = result / 10;
+            s[max_digits - i] = (result % 10) + '0';
+        }
+        return BigInt(s, true); 
     }
-    return sum;
+    // Case 3: One BigInt is positive and the other is negative
+    else {
+        BigInt positive = (b1.flag ? b2 : b1); // whichever is positive
+        BigInt negative = (b1.flag ? b1 : b2); // whichever is negative
+        if (positive > negative) {  // positive > negative
+            for (int i = 0; i < max_digits || carry; i++) {
+                i1 = (i < positive.digits.size()) ? (positive.digits[positive.digits.size() - 1 - i] - '0') : 0;
+                i2 = (i < negative.digits.size()) ? (negative.digits[negative.digits.size() - 1 - i] - '0') : 0;
+
+                int result = i1 - i2 + carry;
+                carry = (result < 0) ? -1 : 0; // carry is -1 when result is negative
+                if (result < 0) result += 10;
+                s[max_digits - i] = result + '0';
+            }
+            return BigInt(s, positive.flag); // result flag follows the sign of positive
+        } else {  // negative > positive
+            for (int i = 0; i < max_digits || carry; i++) {
+                i1 = (i < positive.digits.size()) ? (positive.digits[positive.digits.size() - 1 - i] - '0') : 0;
+                i2 = (i < negative.digits.size()) ? (negative.digits[negative.digits.size() - 1 - i] - '0') : 0;
+
+                int result = i2 - i1 + carry;
+                carry = (result < 0) ? -1 : 0; // carry is -1 when result is negative
+                if (result < 0) result += 10;
+                s[max_digits - i] = result + '0';
+            }
+            return BigInt(s, negative.flag); // result flag follows the sign of negative
+        }
+    }
 }
