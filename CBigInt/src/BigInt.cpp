@@ -181,3 +181,11 @@ BigInt BigInt::operator+(const BigInt& b2) const
         }
     }
 }
+BigInt BigInt::operator-(const BigInt& sub2) const {
+    BigInt b1(digits, flag);
+    //Subtraction is just addition
+    BigInt reverse2(sub2.digits,!sub2.flag);
+    BigInt sum;
+    sum = b1+ reverse2;
+    return sum;
+}

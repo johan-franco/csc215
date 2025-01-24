@@ -69,7 +69,32 @@ TEST_CASE("Test can add BigInts") {
     CHECK((i1 + i2).to_string() == "444"); 
     CHECK((i1 + i3).to_string() == "43333"); 
     CHECK((i4+i5).to_string() == "10000"); 
+    CHECK((i5 - i3).to_string() == "-66666");
+
     /*Succesful because I've been always accounting for a increase in the maximum number
     of characters increasing by one but that has affected the other testcases which is why they
     are marked wrong.*/
+}
+
+TEST_CASE("Test subtraction of BigInts") {
+    BigInt i1("12345", false);   
+    BigInt i2("54321", false);  
+    BigInt i3("12345", false);   
+    BigInt i4("-54321", true);  
+    BigInt i5("-12345", true);  
+    BigInt i6("54321", false);  
+    BigInt i7("-12345", true);   
+    BigInt i8("-54321", true);
+
+    //regular subtraction
+    CHECK((i1 - i2).to_string() == "-41976");
+
+    //test to see if it will increase (double negative test)
+    CHECK((i3 - i4).to_string() == "66666"); // 12345 - (-54321) = 12345 + 54321 = 66666
+
+    //testing negative number being subtracted
+    CHECK((i5 - i6).to_string() == "-66666");
+
+    //testing double negative if first val is negative instead of positive
+    CHECK((i7 - i8).to_string() == "41976");
 }
