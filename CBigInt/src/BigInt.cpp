@@ -116,6 +116,12 @@ BigInt BigInt::operator+(const BigInt& b2) const
             carry = result / 10;
             s[max_digits - i] = (result % 10) + '0';
         }
+    size_t not_space = s.find_first_not_of(' ');
+
+    // If there's any non-space character, cut the string to remove the leading spaces
+    if (not_space != string::npos) {
+        s = s.substr(not_space);
+    }
         return BigInt(s, false);
 
     }
@@ -128,6 +134,11 @@ BigInt BigInt::operator+(const BigInt& b2) const
             int result = i1 + i2 + carry;
             carry = result / 10;
             s[max_digits - i] = (result % 10) + '0';
+        }
+        size_t not_space = s.find_first_not_of(' ');
+        // If there's any non-space character, cut the string to remove the leading spaces
+        if (not_space != string::npos) {
+            s = s.substr(not_space);
         }
         return BigInt(s, true); 
     }
@@ -145,6 +156,11 @@ BigInt BigInt::operator+(const BigInt& b2) const
                 if (result < 0) result += 10;
                 s[max_digits - i] = result + '0';
             }
+            size_t not_space = s.find_first_not_of(' ');
+            // If there's any non-space character, cut the string to remove the leading spaces
+            if (not_space != string::npos) {
+                s = s.substr(not_space);
+            }
             return BigInt(s, positive.flag); // result flag follows the sign of positive
         } else {  // negative > positive
             for (int i = 0; i < max_digits || carry; i++) {
@@ -156,7 +172,12 @@ BigInt BigInt::operator+(const BigInt& b2) const
                 if (result < 0) result += 10;
                 s[max_digits - i] = result + '0';
             }
-            return BigInt(s, negative.flag); // result flag follows the sign of negative
+            size_t not_space = s.find_first_not_of(' ');
+            // If there's any non-space character, cut the string to remove the leading spaces
+            if (not_space != string::npos) {
+                s = s.substr(not_space);
+            }
+            return BigInt(s, negative.flag); // result will have negative flag
         }
     }
 }
