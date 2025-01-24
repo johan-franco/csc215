@@ -66,10 +66,14 @@ TEST_CASE("Test can add BigInts") {
     BigInt i3("43210");
     BigInt i4("9999");
     BigInt i5("1");
+    BigInt i6("-321");
+
     CHECK((i1 + i2).to_string() == "444"); 
     CHECK((i1 + i3).to_string() == "43333"); 
     CHECK((i4+i5).to_string() == "10000"); 
-    CHECK((i5 - i3).to_string() == "-66666");
+    CHECK((i5 - i3).to_string() == "-43209");
+    CHECK((i6 - i3).to_string() == "-43531");
+
 
     /*Succesful because I've been always accounting for a increase in the maximum number
     of characters increasing by one but that has affected the other testcases which is why they

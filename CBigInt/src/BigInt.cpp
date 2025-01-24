@@ -182,15 +182,22 @@ BigInt BigInt::operator+(const BigInt& b2) const
     }
 }
 BigInt BigInt::operator-(const BigInt& sub2) const {
+    /*We want to be able to handle if the possibility that sub2 is negative or positive,
+    because if it is negative then it will turn to addition otherwise we need to turn it positive +*/
     BigInt b1(digits, flag);
     int i1, i2, carry = 0;
     int max_digits = max(b1.digits.length(), sub2.digits.length());
     string s(max_digits + 1, ' ');  // one extra space for carry
     //Subtraction is just addition
-    if(sub2.flag == true && b1.flag==false) {
-        return b1 + sub2;
+
+    if(!sub2.flag == b1.flag) {
+        //Handles case where the reverse of sub2 makes it tbe same sign as b1 
+        return b1 + BigInt(sub2.digits, !sub2.flag);
     }
-    else if(sub2.flag == false && b1.flag ==false) {
+    else if {
+        
+    }
+    else {
         BigInt positive = b1;
         BigInt negative = sub2;
         if (positive > negative) {  // positive > negative
@@ -224,7 +231,7 @@ BigInt BigInt::operator-(const BigInt& sub2) const {
             if (not_space != string::npos) {
                 s = s.substr(not_space);
             }
-            return BigInt(s, negative.flag); // result will have negative flag
+            return BigInt(s, true); // result will have negative flag
         }
     }
 }
