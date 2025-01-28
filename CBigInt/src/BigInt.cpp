@@ -14,6 +14,7 @@ BigInt::BigInt(int i)
 {
     flag = (i >= 0) ? false : true;
     digits = (i >= 0) ? std::to_string(i) : std::to_string(-i);
+
 }
 
 BigInt::BigInt(string n)
@@ -31,7 +32,7 @@ string BigInt::to_string() const
 BigInt::BigInt(string n, bool b)
 {
     flag = b;
-    digits = n;
+    digits = (n.front() == '-') ? n.substr(1, n.size() - 1) : n;  
 }
 
 
@@ -182,26 +183,26 @@ BigInt BigInt::operator+(const BigInt& b2) const
     }
 }
 BigInt BigInt::operator-(const BigInt& sub2) const {
-    /*Still need to handle that double - are appearing & other cases*/
     BigInt b1(digits, flag);
     int i1, i2, carry = 0;
     int max_digits = max(b1.digits.length(), sub2.digits.length());
     string s(max_digits + 1, ' ');  // one extra space for carry
     //Subtraction is just addition
 
-    if(!sub2.flag == b1.flag) {
-        //Handles case where the reverse of sub2 makes it tbe same sign as b1 
+    if(sub2.flag == false && b1.flag == true) {
+        //Handles case where the reverse of sub2 makes it tbe same sign as b1 (b- (-s)) || -b-s
         return b1 + BigInt(sub2.digits, !sub2.flag);
     }
-    if (sub2.flag == true){
+    if (sub2.flag == true && b1.flag == false){
         //handles double negative
-        string s = (b1 + BigInt(sub2.digits, false)).to_string();
+        BigInt sum = b1 + BigInt(sub2.digits, false);
+        string s = sum.digits;
         size_t not_zero = s.find_first_not_of('0');
         // Cut the string to remove the leading zeros
         if (not_zero != string::npos) {
             s = s.substr(not_zero);
         }
-        return BigInt(s,(b1 + BigInt(sub2.digits, !sub2.flag)).flag);
+        return BigInt(s, false);
     }
     else {
         BigInt positive = b1;
