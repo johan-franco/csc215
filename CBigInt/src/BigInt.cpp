@@ -246,6 +246,8 @@ BigInt BigInt::operator*(const BigInt& mult)const {
     BigInt b1(digits, flag);
     int max_digits = 100;
     string s(max_digits, ' ');
+    //We want to use the regular BigInt mult with ints for the bigint mult by bigint
+    //something like temp=int(mult.digits[i]*10^c + temp)
 
     return mult;
 
@@ -256,7 +258,7 @@ BigInt BigInt::operator*(int mult)const {
     string s(max_digits, ' ');
     BigInt temp(b1);
 
-    for(int i = 2; i < mult; i++) {
+    for(int i = 1; i < mult; i++) {
         temp = (temp + b1);
     }
     return temp;
