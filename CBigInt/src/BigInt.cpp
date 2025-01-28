@@ -190,26 +190,20 @@ BigInt BigInt::operator-(const BigInt& sub2) const {
     //Subtraction is just addition
 
     if(sub2.flag == false && b1.flag == true) {
-        //Handles case where calc is -b-s
+        //Handles case where the reverse of sub2 makes it tbe same sign as b1 (b- (-s)) || -b-s
         return b1 + BigInt(sub2.digits, !sub2.flag);
     }
     if (sub2.flag == true && b1.flag == false){
         //handles double negative
-
-        return b1 + BigInt(sub2.digits, false);
-    }
-    if (sub2.flag == false && b1.flag == false){
-        //this is b -s meaning it could turn stay positive or be negative 
-        BigInt sum = b1 + BigInt(sub2.digits, true);
-        string s = sum.to_string();
+        BigInt sum = b1 + BigInt(sub2.digits, false);
+        string s = sum.digits;
         size_t not_zero = s.find_first_not_of('0');
         // Cut the string to remove the leading zeros
         if (not_zero != string::npos) {
             s = s.substr(not_zero);
         }
-        return BigInt(s);
+        return BigInt(s, false);
     }
-
     else {
         BigInt positive = b1;
         BigInt negative = sub2;

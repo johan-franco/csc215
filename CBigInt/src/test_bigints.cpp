@@ -74,7 +74,7 @@ TEST_CASE("Test can add BigInts") {
     CHECK((i5 - i3).to_string() == "-43209");
     CHECK((i6 - i3).to_string() == "-43531");
     CHECK((i1 - i6).to_string() == "444");
-    CHECK((i1 *4).to_string() == "369");
+    CHECK((i1 *19).to_string() == "1231");
 
 
     /*Succesful because I've been always accounting for a increase in the maximum number
