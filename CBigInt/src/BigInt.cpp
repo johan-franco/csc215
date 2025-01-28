@@ -245,9 +245,15 @@ BigInt BigInt::operator-(const BigInt& sub2) const {
 BigInt BigInt::operator*(const BigInt& mult)const {
     BigInt b1(digits, flag);
     int max_digits = 100;
+    double count = 0;
     string s(max_digits, ' ');
+    BigInt temp(b1);
+
     //We want to use the regular BigInt mult with ints for the bigint mult by bigint
     //something like temp=int(mult.digits[i]*10^c + temp)
+    for(int i = 1; i < mult.digits.length(); i++) {
+        temp = (temp + (b1*pow(10.0,count)));
+    }
 
     return mult;
 
