@@ -105,3 +105,15 @@ TEST_CASE("Test subtraction of BigInts") {
     //testing double negative if first val is negative instead of positive
     CHECK((i7 - i8).to_string() == "41976");
 }
+
+ TEST_CASE("BigInt Multiplication Operator (BigInt * BigInt)") {
+    BigInt b1(12);
+    BigInt b2(3);
+    BigInt b3(-12);
+    BigInt b4(-3);
+
+    CHECK((b1 * b2).to_string() == "36");
+    CHECK((b3 * b4).to_string() == "36");
+    CHECK((b1 * b4).to_string() == "-36");
+    CHECK((b3 * b2).to_string() == "-36");
+}

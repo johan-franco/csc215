@@ -247,16 +247,19 @@ BigInt BigInt::operator*(const BigInt& mult)const {
     int max_digits = 100;
     double count = 0;
     string s(max_digits, ' ');
-    BigInt temp(b1);
+    BigInt temp(b1.digits, false);
 
     //We want to use the regular BigInt mult with ints for the bigint mult by bigint
     //something like temp=int(mult.digits[i]*10^c + temp)
     for(int i = 1; i < mult.digits.length(); i++) {
-        temp = (temp + (b1*pow(10.0,count)));
+        for(int j =1; j < mult.digits[count];j++) {
+            temp = (temp + (b1*pow(10.0,count)));
+        }
+        count++;
     }
 
-    return mult;
-
+    return (b1.flag == mult.flag) ? BigInt(temp.digits, false): BigInt(temp.digits,true);
+    
 }
 BigInt BigInt::operator*(int mult)const {
     BigInt b1(digits, flag);
