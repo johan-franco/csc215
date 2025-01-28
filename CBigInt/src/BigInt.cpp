@@ -252,8 +252,8 @@ BigInt BigInt::operator*(const BigInt& mult)const {
     //We want to use the regular BigInt mult with ints for the bigint mult by bigint
     //something like temp=int(mult.digits[i]*10^c + temp)
     for(int i = 1; i < mult.digits.length(); i++) {
-        for(int j =1; j < mult.digits[count];j++) {
-            temp = (temp + (b1*pow(10.0,count)));
+        for(int j =0; j < mult.digits[count];j++) {
+            temp = (BigInt(temp.digits, false) + (BigInt(b1.digits, false)*pow(10.0,count)));
         }
         count++;
     }
