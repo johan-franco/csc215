@@ -8,12 +8,16 @@ BigInt::BigInt()
 {
     flag = false;
     digits = "0";
+    reverse = digits;
 }
 
 BigInt::BigInt(int i)
 {
     flag = (i >= 0) ? false : true;
     digits = (i >= 0) ? std::to_string(i) : std::to_string(-i);
+    reverse = digits;
+    std::reverse(reverse.begin(), reverse.end());
+
 
 }
 
@@ -21,6 +25,8 @@ BigInt::BigInt(string n)
 {
     flag = (n.front() == '-') ? true: false;
     digits = (n.front() == '-') ? n.substr(1, n.size() - 1) : n;  
+    reverse = digits;
+    std::reverse(reverse.begin(), reverse.end());
 
 }
 
@@ -33,6 +39,8 @@ BigInt::BigInt(string n, bool b)
 {
     flag = b;
     digits = (n.front() == '-') ? n.substr(1, n.size() - 1) : n;  
+    reverse = digits;
+    std::reverse(reverse.begin(), reverse.end());
 }
 
 

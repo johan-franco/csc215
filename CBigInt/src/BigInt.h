@@ -7,6 +7,7 @@ class BigInt
 {
     bool flag;
     string digits;
+    string reverse;
 
     public:
     // constructors
