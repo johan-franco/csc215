@@ -150,7 +150,29 @@ BigInt BigInt::operator-(const BigInt& b2) const {
         negateResult = !flag; //If we are wrong then we need to have values swapped for flag
     }
 
+    std::string result; //will carry result in char in normal order meaing it needs to be reversed
+    int carry = 0;
+    //If we know which is the largest then we can evaluate it as largest - smaller and then set the flag as pos or neg
+    //Ex if we know that -a - (-b) will be pos then b(larg) - a(small) is the same thing and we know not to worry about whether a is enough to make it neg
+    int i = larger.digits.size() - 1, j = smaller.digits.size() - 1; //reduce by one as least sig are at highest index val
+    while (i >= 0) {
+        int dl = larger.digits[i] - '0'; //convert char to int
+        int ds = (j >= 0) ? smaller.digits[j] - '0' : 0; //makes ds 0 if no more num to sub
 
+        if (dl < ds + carry) {
+            ds += 10;
+            result += (dl - ds - carry) + '0'; //add zero or sub to convert between char and int
+            carry = 1;
+        } else {
+            result += (dl - ds - carry) + '0';
+            carry = 0;
+        }
+
+        i--;
+        j--;
+    }
+
+    std::reverse(result.begin(), result.end());
     
     // Ensure that zeros are trimmed
     while (result.size() > 1 && result[0] == '0') {
