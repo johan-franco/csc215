@@ -90,7 +90,7 @@ TEST_CASE("Test subtraction of BigInts") {
     BigInt i5("-12345", true);  
     BigInt i6("54321", false);  
     BigInt i7("-12345", true);   
-    BigInt i8("-54321", true);
+    BigInt i8("-54321");
 
     //This test case is causing entire test case to fail
     //CHECK((i1 - i2).to_string() == "-41976");
@@ -111,7 +111,7 @@ TEST_CASE("Test subtraction of BigInts") {
     BigInt b2(3);
     BigInt b3(-12);
     BigInt b4(-3);
-//All are currently returning either 12 or -12 meaning that b1/b3 are simply being returned
+//All are currently returning either 12 or -12 meaning that b1/b3 are simply being
     CHECK((b1 * b2).to_string() == "36"); 
     CHECK((b3 * b4).to_string() == "36");
     CHECK((b1 * b4).to_string() == "-36");

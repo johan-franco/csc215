@@ -30,9 +30,15 @@ BigInt::BigInt(string n)
 
 }
 
-string BigInt::to_string() const
-{
-    return (!flag) ? digits : "-" + digits;
+std::string BigInt::to_string() const {
+    std::string str = digits;
+    
+    // Remove leading zeros except for a single zero
+    while (str.size() > 1 && str[0] == '0') {
+        str.erase(str.begin());
+    }
+
+    return (flag && str != "0") ? "-" + str : str;
 }
 
 BigInt::BigInt(string n, bool b)
@@ -108,148 +114,30 @@ bool BigInt::operator>=(const BigInt& i2) const
     return BigInt(sum);
 }*/
 
-BigInt BigInt::operator+(const BigInt& b2) const
-{
+BigInt BigInt::operator+(const BigInt& b2) const {
     BigInt b1(digits, flag);
-    int i1, i2, carry = 0;
+    int carry = 0;
     int max_digits = max(b1.digits.length(), b2.digits.length());
-    string s(max_digits + 1, ' ');  // one extra space for carry
+    string s(max_digits + 1, '0');
 
-    // Case 1: Both are positive
-    if (!b1.flag && !b2.flag) {
+    if (b1.flag == b2.flag) {
         for (int i = 0; i < max_digits || carry; i++) {
-            i1 = (i < b1.digits.size()) ? (b1.digits[b1.digits.size() - 1 - i] - '0') : 0;
-            i2 = (i < b2.digits.size()) ? (b2.digits[b2.digits.size() - 1 - i] - '0') : 0;
+            int i1 = (i < b1.digits.size()) ? b1.digits[b1.digits.size() - 1 - i] - '0' : 0;
+            int i2 = (i < b2.digits.size()) ? b2.digits[b2.digits.size() - 1 - i] - '0' : 0;
 
-            int result = i1 + i2 + carry;
-            carry = result / 10;
-            s[max_digits - i] = (result % 10) + '0';
+            int sum = i1 + i2 + carry;
+            carry = sum / 10;
+            s[max_digits - i] = (sum % 10) + '0';
         }
-    size_t not_space = s.find_first_not_of(' ');
-
-    // If there's any non-space character, cut the string to remove the leading spaces
-    if (not_space != string::npos) {
-        s = s.substr(not_space);
-    }
-        return BigInt(s, false);
-
-    }
-    // Case 2: Both BigInts are negative
-    else if (b1.flag && b2.flag) {
-        for (int i = 0; i < max_digits || carry; i++) {
-            i1 = (i < b1.digits.size()) ? (b1.digits[b1.digits.size() - 1 - i] - '0') : 0;
-            i2 = (i < b2.digits.size()) ? (b2.digits[b2.digits.size() - 1 - i] - '0') : 0;
-
-            int result = i1 + i2 + carry;
-            carry = result / 10;
-            s[max_digits - i] = (result % 10) + '0';
-        }
-        size_t not_space = s.find_first_not_of(' ');
-        // If there's any non-space character, cut the string to remove the leading spaces
-        if (not_space != string::npos) {
-            s = s.substr(not_space);
-        }
-        return BigInt(s, true); 
-    }
-    // Case 3: One BigInt is positive and the other is negative
-    else {
-        BigInt positive = (b1.flag ? b2 : b1); // whichever is positive
-        BigInt negative = (b1.flag ? b1 : b2); // whichever is negative
-        if (positive > negative) {  // positive > negative
-            for (int i = 0; i < max_digits || carry; i++) {
-                i1 = (i < positive.digits.size()) ? (positive.digits[positive.digits.size() - 1 - i] - '0') : 0;
-                i2 = (i < negative.digits.size()) ? (negative.digits[negative.digits.size() - 1 - i] - '0') : 0;
-
-                int result = i1 - i2 + carry;
-                carry = (result < 0) ? -1 : 0; // carry is -1 when result is negative
-                if (result < 0) result += 10;
-                s[max_digits - i] = result + '0';
-            }
-            size_t not_space = s.find_first_not_of(' ');
-            // If there's any non-space character, cut the string to remove the leading spaces
-            if (not_space != string::npos) {
-                s = s.substr(not_space);
-            }
-            return BigInt(s, positive.flag); // result flag follows the sign of positive
-        } else {  // negative > positive
-            for (int i = 0; i < max_digits || carry; i++) {
-                i1 = (i < positive.digits.size()) ? (positive.digits[positive.digits.size() - 1 - i] - '0') : 0;
-                i2 = (i < negative.digits.size()) ? (negative.digits[negative.digits.size() - 1 - i] - '0') : 0;
-
-                int result = i2 - i1 + carry;
-                carry = (result < 0) ? -1 : 0; // carry is -1 when result is negative
-                if (result < 0) result += 10;
-                s[max_digits - i] = result + '0';
-            }
-            size_t not_space = s.find_first_not_of(' ');
-            // If there's any non-space character, cut the string to remove the leading spaces
-            if (not_space != string::npos) {
-                s = s.substr(not_space);
-            }
-            return BigInt(s, negative.flag); // result will have negative flag
-        }
+        if (carry) s.insert(s.begin(), '1');
+        return BigInt(s, b1.flag);
+    } else {
+        return (*this - BigInt(b2.digits, !b2.flag));
     }
 }
-BigInt BigInt::operator-(const BigInt& sub2) const {
-    BigInt b1(digits, flag);
-    int i1, i2, carry = 0;
-    int max_digits = max(b1.digits.length(), sub2.digits.length());
-    string s(max_digits + 1, ' ');  // one extra space for carry
-    //Subtraction is just addition
 
-    if(sub2.flag == false && b1.flag == true) {
-        //Handles case where the reverse of sub2 makes it tbe same sign as b1 (b- (-s)) || -b-s
-        return b1 + BigInt(sub2.digits, !sub2.flag);
-    }
-    if (sub2.flag == true && b1.flag == false){
-        //handles double negative
-        BigInt sum = b1 + BigInt(sub2.digits, false);
-        string s = sum.digits;
-        size_t not_zero = s.find_first_not_of('0');
-        // Cut the string to remove the leading zeros
-        if (not_zero != string::npos) {
-            s = s.substr(not_zero);
-        }
-        return BigInt(s, false);
-    }
-    else {
-        BigInt positive = b1;
-        BigInt negative = sub2;
-        if (positive > negative) {  // positive > negative
-            for (int i = 0; i < max_digits || carry; i++) {
-                i1 = (i < positive.digits.size()) ? (positive.digits[positive.digits.size() - 1 - i] - '0') : 0;
-                i2 = (i < negative.digits.size()) ? (negative.digits[negative.digits.size() - 1 - i] - '0') : 0;
 
-                int result = i1 - i2 + carry;
-                carry = (result < 0) ? -1 : 0; // carry is -1 when result is negative
-                if (result < 0) result += 10;
-                s[max_digits - i] = result + '0';
-            }
-            size_t not_space = s.find_first_not_of(' ');
-            // If there's any non-space character, cut the string to remove the leading spaces
-            if (not_space != string::npos) {
-                s = s.substr(not_space);
-            }
-            return BigInt(s, positive.flag); // result flag follows the sign of positive
-        } else {  // negative > positive
-            for (int i = 0; i < max_digits || carry; i++) {
-                i1 = (i < positive.digits.size()) ? (positive.digits[positive.digits.size() - 1 - i] - '0') : 0;
-                i2 = (i < negative.digits.size()) ? (negative.digits[negative.digits.size() - 1 - i] - '0') : 0;
 
-                int result = i2 - i1 + carry;
-                carry = (result < 0) ? -1 : 0; // carry is -1 when result is negative
-                if (result < 0) result += 10;
-                s[max_digits - i] = result + '0';
-            }
-            size_t not_space = s.find_first_not_of(' ');
-            // If there's any non-space character, cut the string to remove the leading spaces
-            if (not_space != string::npos) {
-                s = s.substr(not_space);
-            }
-            return BigInt(s, true); // result will have negative flag
-        }
-    }
-}
 BigInt BigInt::operator*(const BigInt& mult)const {
     BigInt b1(digits, flag);
     int max_digits = 100;
