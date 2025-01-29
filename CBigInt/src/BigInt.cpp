@@ -142,26 +142,26 @@ BigInt BigInt::operator-(const BigInt& b2) const {
     }
     //Possiblity of either pos or neg -a - -b || a - b
     //Therefore i need to ensure that the largest is identified
-    bool negateResult = flag; //By default assume that a is larger
+    bool negateResult = flag;//By default assume that a is larger
     BigInt larger = *this, smaller = b2;
 
-    if (larger < smaller) {  // Flip operands if necessary
+    if (larger < smaller) {  
         std::swap(larger, smaller);
-        negateResult = !flag; //If we are wrong then we need to have values swapped for flag
+        negateResult = !flag;//If we are wrong then we need to have values swapped for flag
     }
 
     std::string result; //will carry result in char in normal order meaing it needs to be reversed
     int carry = 0;
     //If we know which is the largest then we can evaluate it as largest - smaller and then set the flag as pos or neg
     //Ex if we know that -a - (-b) will be pos then b(larg) - a(small) is the same thing and we know not to worry about whether a is enough to make it neg
-    int i = larger.digits.size() - 1, j = smaller.digits.size() - 1; //reduce by one as least sig are at highest index val
+    int i = larger.digits.size() - 1, j = smaller.digits.size() - 1;
     while (i >= 0) {
-        int dl = larger.digits[i] - '0'; //convert char to int
-        int ds = (j >= 0) ? smaller.digits[j] - '0' : 0; //makes ds 0 if no more num to sub
+        int dl = larger.digits[i] - '0';
+        int ds = (j >= 0) ? smaller.digits[j] - '0' : 0;//makes ds 0 if no more num to sub
 
         if (dl < ds + carry) {
-            ds += 10;
-            result += (dl - ds - carry) + '0'; //add zero or sub to convert between char and int
+            dl += 10;  // Borrow from the next digit
+            result += (dl - ds - carry) + '0';//add zero or sub to convert between char and int
             carry = 1;
         } else {
             result += (dl - ds - carry) + '0';
@@ -172,9 +172,10 @@ BigInt BigInt::operator-(const BigInt& b2) const {
         j--;
     }
 
+    // Reverse the result string since we built it from least significant to most significant
     std::reverse(result.begin(), result.end());
     
-    // Ensure that zeros are trimmed
+    // Remove leading zeros if any
     while (result.size() > 1 && result[0] == '0') {
         result.erase(result.begin());
     }
@@ -185,24 +186,26 @@ BigInt BigInt::operator-(const BigInt& b2) const {
 
 
 BigInt BigInt::operator*(const BigInt& mult)const {
+    int sign = (flag == mult.flag) ? 0 : 1;  // Determines flag val
     BigInt b1(digits, flag);
     int max_digits = 100;
     double count = 0;
     string s(max_digits, ' ');
     BigInt temp(b1.digits, false);
 
-    //We want to use the regular BigInt mult with ints for the bigint mult by bigint
-    //something like temp=int(mult.digits[i]*10^c + temp)
-    for(int i = 1; i < mult.digits.length(); i++) {
-        for(int j =0; j < mult.digits[count];j++) {
-            temp = (BigInt(temp.digits, false) + (BigInt(b1.digits, false)*pow(10.0,count)));
+    //We need to loop decreasing in amount
+    for (int i = digits.size() - 1; i >= 0; i--) {
+        for (int j = mult.digits.size() - 1; j >= 0; j--) {
+            int mul = (digits[i] - '0') * (mult.digits[j] - '0'); //convert to int for multiplication
+            continue;
         }
-        count++;
     }
 
-    return (b1.flag == mult.flag) ? BigInt(temp.digits, false): BigInt(temp.digits,true);
+    return BigInt(temp.digits, sign);
     
 }
+
+
 BigInt BigInt::operator*(int mult)const {
     BigInt b1(digits, flag);
     int max_digits = 100;
