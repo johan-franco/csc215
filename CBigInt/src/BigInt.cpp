@@ -206,6 +206,11 @@ BigInt BigInt::operator*(const BigInt& mult)const {
         }
     }
     string result;
+    for (int num : product) {
+        if (!(result.empty() && num == 0)) {
+            result += num + '0';
+        }
+    }
     return BigInt(result, sign);
     
 }
