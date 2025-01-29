@@ -1,18 +1,17 @@
 #include <iostream>
 #include <string>
+#include "BigInt.cpp"  
 using namespace std;
 
-enum OpType { ADD, SUBSTRACT, MULTIPLY, STOP, ILLEGAL_OP };
-
+enum OpType { ADD, SUBTRACT, MULTIPLY, STOP, ILLEGAL_OP };
 
 OpType string_to_op(const string &s) {
     if (s == "+") return ADD;
-    if (s == "-") return SUBSTRACT;
+    if (s == "-") return SUBTRACT;
     if (s == "*") return MULTIPLY;
     if (s == "=") return STOP;
     return ILLEGAL_OP;
 }
-
 
 OpType get_op() {
     string s;
@@ -25,31 +24,34 @@ OpType get_op() {
     return op;
 }
 
-
 int main() {
-    int accumulator = 0;
-    int current;
+    BigInt accumulator("0");  
+    BigInt current("0");    
     OpType op = ADD;
 
     while (op != STOP) {
         cout << "Enter value: ";
-        cin >> current;
+        string input;
+        cin >> input;
+        current = BigInt(input);  
+        
         switch (op) {
             case ADD:
-                accumulator += current;
+                accumulator = accumulator + current;  
                 break;
-            case SUBSTRACT:
-                accumulator -= current;
+            case SUBTRACT:
+                accumulator = accumulator - current;  
+                break;
             case MULTIPLY:
-                accumulator *= current;
+                accumulator = accumulator * current; 
                 break;
             default:
                 cerr << "Error with operator" << endl;
         }
-        cout << "--> " << accumulator << endl;
-        op = get_op();
+        cout << "--> " << accumulator.to_string() << endl; 
+        op = get_op(); 
     }
-    cout << "Final Total: " << accumulator << endl;
+    cout << "Final Total: " << accumulator.to_string() << endl; 
 
     return 0;
 }
