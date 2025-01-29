@@ -188,22 +188,28 @@ BigInt BigInt::operator-(const BigInt& b2) const {
 BigInt BigInt::operator*(const BigInt& mult)const {
     int sign = (flag == mult.flag) ? 0 : 1;  // Determines flag val
     BigInt b1(digits, flag);
-    int max_digits = 100;
-    double count = 0;
-    string s(max_digits, ' ');
-    BigInt temp(b1.digits, false);
+    //string was not working the best, also I realized 3 digit mult 2 digit would at most have 5 digit
+    std::vector<int> product(digits.size() + mult.digits.size(), 0);
+
 
     //We need to loop decreasing in amount
     for (int i = digits.size() - 1; i >= 0; i--) {
         for (int j = mult.digits.size() - 1; j >= 0; j--) {
             int mul = (digits[i] - '0') * (mult.digits[j] - '0'); //convert to int for multiplication
-            continue;
+            /*product is also in reverse order meaning we need to add i and j to recieve current position
+            as the maximum is the num of digits they have*/
+            int sum = product[i + j + 1] + mul;
+            //add remainder to less significant num
+            product[i + j + 1] = sum % 10;
+            //add carry to next significant num
+            product[i + j] += sum / 10;
         }
     }
-
-    return BigInt(temp.digits, sign);
+    string result;
+    return BigInt(result, sign);
     
 }
+
 
 
 BigInt BigInt::operator*(int mult)const {
