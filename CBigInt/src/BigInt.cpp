@@ -136,6 +136,30 @@ BigInt BigInt::operator+(const BigInt& b2) const {
     }
 }
 
+BigInt BigInt::operator-(const BigInt& b2) const {
+    if (flag != b2.flag) { // -a - b || a - -b (always neg/pos no possibility of anything else)
+        return *this + BigInt(b2.digits, !b2.flag); // Convert subtraction to addition if opposite signs
+    }
+    //Possiblity of either pos or neg -a - -b || a - b
+    //Therefore i need to ensure that the largest is identified
+    bool negateResult = flag; //By default assume that a is larger
+    BigInt larger = *this, smaller = b2;
+
+    if (larger < smaller) {  // Flip operands if necessary
+        std::swap(larger, smaller);
+        negateResult = !flag; //If we are wrong then we need to have values swapped for flag
+    }
+
+
+    
+    // Ensure that zeros are trimmed
+    while (result.size() > 1 && result[0] == '0') {
+        result.erase(result.begin());
+    }
+
+    return BigInt(result, negateResult);
+}
+
 
 
 BigInt BigInt::operator*(const BigInt& mult)const {
